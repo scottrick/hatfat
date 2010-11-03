@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/planets">
+        <file>resources/icon.xpm</file>
+    </qresource>
+</RCC>
