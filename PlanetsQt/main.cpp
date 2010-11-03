@@ -3,12 +3,30 @@
 
 #include "GLWidget.h"
 
+bool        bApplicationRunning     = true;
+GLWidget    *pGLWidget              = 0;
+
+void refreshAll();
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    GLWidget glWidget;
-    glWidget.show();
+    pGLWidget = new GLWidget();
+    pGLWidget->show();
 
-    return a.exec();
+    while (bApplicationRunning)
+    {
+        a.processEvents();
+        refreshAll();
+
+        pGLWidget->updateGL();
+    }
+
+//    return a.exec();
+}
+
+void refreshAll()
+{
+    pGLWidget->refresh();
 }

@@ -28,16 +28,7 @@ GLWidget::GLWidget(QWidget *parent) :
 
     setWindowIcon(QIcon(":/planets/resources/icon.xpm"));
 
-    pTestNoise      = 0;
-    pTestData       = 0;
-
-    pPlanet = new Planet();
-    pPlanet->Randomize();
-
-    initializeNoise();
-
-    ShaderManager::get();
-    ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
+    initialize();
 }
 
 GLWidget::~GLWidget()
@@ -47,6 +38,12 @@ GLWidget::~GLWidget()
 
 void GLWidget::initializeGL()
 {
+    printf("OpenGL Version %s\n%s\n%s\nShader Version %s\n\n", glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER), glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    //start by initializing the shader manager
+    ShaderManager::get();
+    ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
@@ -131,7 +128,6 @@ void GLWidget::keyPressEvent(QKeyEvent *pKeyEvent)
 
 void GLWidget::paintGL()
 {
-    printf("paintGL!\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
@@ -158,6 +154,11 @@ void GLWidget::paintGL()
 
     //TODO
     //   glutSwapBuffers();
+}
+
+void GLWidget::refresh()
+{
+
 }
 
 void GLWidget::resizeGL(int width, int height)
@@ -187,9 +188,6 @@ void GLWidget::createRandomNoise()
 
     pTestNoise = new Noise(rand());
     pTestData = new SimpleMeshData(pTestNoise);
-
-    glVertexPointer(3, GL_FLOAT, 0, pTestData->getVertices());
-    glColorPointer(4, GL_UNSIGNED_BYTE, 0, pTestData->getColors());
 }
 
 void GLWidget::drawNoise()
@@ -201,6 +199,9 @@ void GLWidget::drawNoise()
 
     glLineWidth(1.0f);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+    glVertexPointer(3, GL_FLOAT, 0, pTestData->getVertices());
+    glColorPointer(4, GL_UNSIGNED_BYTE, 0, pTestData->getColors());
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -245,6 +246,12 @@ void GLWidget::drawScene()
     glMultMatrixf(rotation.m);
 
     ShaderManager::get().GetActiveProgram()->Activate();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-1.0f, 1.0f, 0.0f);
+    glVertex3f(-1.0f, -1.0f, 0.0f);
+    glVertex3f(1.0f, 1.0f, 0.0f);
+    glEnd();
 
     switch (currentShape)
     {
@@ -343,13 +350,21 @@ void GLWidget::drawText()
 
 void GLWidget::initialize()
 {
+    pTestNoise      = 0;
+    pTestData       = 0;
+
+    initializeNoise();
+
+    pPlanet = new Planet();
+    pPlanet->Randomize();
+
     fTime = 0.0f;
     bUpdate = false;
 
     TEXT_CHAR_LENGTH    = 42;
     pText               = new char[50];
     currentShape        = SPHERE;
-    currentMode         = SHADER;
+    currentMode         = NOISE_TEST;//SHADER;
     MOUSE_X             = -1;
     MOUSE_Y             = -1;
     bFullscreen         = false;
@@ -360,27 +375,6 @@ void GLWidget::initialize()
     MAX_CAMERA_DISTANCE = PLANET_RADIUS * 20.0f;
     MIN_CAMERA_DISTANCE = PLANET_RADIUS * 1.1f;
     g_fCameraDistance   = PLANET_RADIUS * 2.5f;
-
-    //    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    //    glutInitWindowPosition(WINDOW_OFFSET, WINDOW_OFFSET);
-    //    glutInitWindowSize(WINDOW_SIZE_X, WINDOW_SIZE_Y);
-    //    glutCreateWindow("Shaders 2!");
-    //    glewInit();
-
-    //    printf("OpenGL Version %s\n%s\n%s\nShader Version %s\n\n", glGetString(GL_VERSION), glGetString(GL_VENDOR), glGetString(GL_RENDERER), glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-    //    glutIdleFunc(loopFunction);
-    //    glutDisplayFunc(render);
-    //    glutReshapeFunc(reshapeDisplay);
-    //    glutKeyboardFunc(keyboardStandardDown);
-    //    glutMouseFunc(mouseMove);
-    //    glutMotionFunc(mouseMotion);
-
-    //    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    //    glEnable(GL_DEPTH_TEST);
-
-    //    glViewport(0, 0, WINDOW_SIZE_X, WINDOW_SIZE_Y);
 }
 
 void GLWidget::initializeNoise()

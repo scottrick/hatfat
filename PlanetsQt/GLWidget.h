@@ -21,8 +21,9 @@ public:
     explicit        GLWidget(QWidget *parent = 0);
     ~GLWidget();
 
+    void            refresh();
+
 protected:
-    void            initializeGL();
     void            paintGL();
     void            resizeGL(int, int);
 
@@ -36,6 +37,7 @@ private:
     GLint           getUniformLoc(GLuint program, const GLchar *name);
     void            initialize();
     void            initializeNoise();
+    void            initializeGL();
     void            keyboardStandardDown(unsigned char key, int x, int y);
     void            loopFunction();
     void            mouseMotion(int x, int y);
