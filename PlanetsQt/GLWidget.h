@@ -27,8 +27,9 @@ protected:
     void            paintGL();
     void            resizeGL(int, int);
 
-    void            keyPressEvent(QKeyEvent *);
+    void            keyPressEvent(QKeyEvent *pKeyEvent);
 
+    void            mouseMoveEvent(QMouseEvent *pMouseEvent);
 private:
     void            createRandomNoise();
     void            drawNoise();
@@ -38,7 +39,6 @@ private:
     void            initialize();
     void            initializeNoise();
     void            initializeGL();
-    void            keyboardStandardDown(unsigned char key, int x, int y);
     void            loopFunction();
     void            mouseMotion(int x, int y);
     void            mouseMove(int button, int state, int x, int y);

@@ -23,8 +23,12 @@ GLWidget::GLWidget(QWidget *parent) :
     int desktopHeight   = QApplication::desktop()->height();
     int size = min(desktopWidth, desktopHeight);
 
+    MOUSE_X = MOUSE_Y = -1; //initial values
+
     move(size / 50, size / 50);
     resize(size * 3 / 4, size * 3 / 4);
+
+    this->setMouseTracking(true); //we want all mouse movement...
 
     setWindowIcon(QIcon(":/planets/resources/icon.xpm"));
 
@@ -52,7 +56,7 @@ void GLWidget::initializeGL()
 
 void GLWidget::keyPressEvent(QKeyEvent *pKeyEvent)
 {
-//    cout << "key=" << pKeyEvent->key() << endl;
+    //cout << "key=" << pKeyEvent->key() << endl;
 
     switch (pKeyEvent->key())
     {
@@ -85,11 +89,13 @@ void GLWidget::keyPressEvent(QKeyEvent *pKeyEvent)
         g_fCameraDistance = max(g_fCameraDistance, MIN_CAMERA_DISTANCE);
         break;
 
-    case 3: //CTRL + c
-    case 27: //esc
-        exit(1);
+    case 'C':
+    case 'c': //CTRL + C to quit
+        if (pKeyEvent->modifiers() == Qt::ControlModifier)
+        {
+            exit(1);
+        }
         break;
-
     case 46: // '>' and '.'
     case 62:
         ShaderManager::get().NextProgram();
@@ -126,6 +132,38 @@ void GLWidget::keyPressEvent(QKeyEvent *pKeyEvent)
     }
 }
 
+void GLWidget::mouseMoveEvent(QMouseEvent *pMouseEvent)
+{
+    int buttonsPressed = pMouseEvent->buttons();
+    const QPoint &pos = pMouseEvent->pos();
+
+    if (!buttonsPressed || MOUSE_X == -1)
+    {
+        //no buttons pressed, so just record the change in mouse position
+        //or we haven't had any mouse movement yet, so give it initial values
+        MOUSE_X = pos.x();
+        MOUSE_Y = pos.y();
+    }
+    else if (buttonsPressed & Qt::LeftButton)
+    {
+        int xChange = MOUSE_X - pos.x();
+        int yChange = MOUSE_Y - pos.y();
+        MOUSE_X = pos.x();
+        MOUSE_Y = pos.y();
+
+        if (!xChange && !yChange)
+        {
+            return;
+        }
+
+        Vector3 axis = Vector3(yChange, xChange, 0.0f);
+        Matrix rot = Matrix();
+        rot.SetRotation(axis, sqrt((float)abs(xChange) + (float)abs(yChange)));
+
+        rotation.RotateBy(rot);
+    }
+}
+
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -149,21 +187,20 @@ void GLWidget::paintGL()
     case NOISE_TEST:
         drawNoise();
         break;
-
     }
-
-    //TODO
-    //   glutSwapBuffers();
 }
 
 void GLWidget::refresh()
 {
-
+    if (bUpdate)
+    {
+        pTestData->generateMeshForTime(fTime);
+        fTime += 0.003f;
+    }
 }
 
 void GLWidget::resizeGL(int width, int height)
 {
-    cout << "resizeGL (" << width << ", " << height << ")" << endl;
     glViewport(0, 0, width, height);
 
     glMatrixMode(GL_PROJECTION);
@@ -364,7 +401,7 @@ void GLWidget::initialize()
     TEXT_CHAR_LENGTH    = 42;
     pText               = new char[50];
     currentShape        = SPHERE;
-    currentMode         = NOISE_TEST;//SHADER;
+    currentMode         = SHADER;
     MOUSE_X             = -1;
     MOUSE_Y             = -1;
     bFullscreen         = false;
@@ -381,143 +418,6 @@ void GLWidget::initializeNoise()
 {
     srand(time(0));
     createRandomNoise();
-}
-
-void GLWidget::keyboardStandardDown(unsigned char key, int x, int y)
-{
-    //cout << "key=" << (int)key << endl;
-
-    //    int				dwGlutModifiers		= glutGetModifiers();
-
-    //    bool bAltActive = (dwGlutModifiers & GLUT_ACTIVE_ALT) != 0;
-    //    bool bCtrlActive = (dwGlutModifiers & GLUT_ACTIVE_CTRL) != 0;
-    //    bool bShiftActive = (dwGlutModifiers & GLUT_ACTIVE_SHIFT) != 0;
-
-    switch (key)
-    {
-    case '1':
-        currentMode = SHADER;
-        break;
-
-    case '2':
-        currentMode = NOISE_TEST;
-        break;
-
-    case 'm':
-        rotation.Dump();
-        break;
-
-    case 112: // 'p' and 'P'
-    case 80:
-        bPaused = !bPaused;
-        break;
-
-    case 45: // -
-    case 95: // _
-        g_fCameraDistance = 1.03f * g_fCameraDistance;
-        g_fCameraDistance = min(g_fCameraDistance, MAX_CAMERA_DISTANCE);
-        break;
-
-    case 61: // =
-    case 43: // +
-        g_fCameraDistance = 0.98f * g_fCameraDistance;
-        g_fCameraDistance = max(g_fCameraDistance, MIN_CAMERA_DISTANCE);
-        break;
-
-    case 3: //CTRL + c
-    case 27: //esc
-        exit(1);
-        break;
-
-    case 46: // '>' and '.'
-    case 62:
-        ShaderManager::get().NextProgram();
-        break;
-
-    case 44: // '<' and ",'
-    case 60:
-        ShaderManager::get().PrevProgram();
-        break;
-
-    case 91: // '[' and '{'
-    case 123:
-        prevShape();
-        break;
-
-    case 93: // ']' and '}'
-    case 125:
-        nextShape();
-        break;
-
-    case 32: //spacebar
-        createRandomNoise();
-        pPlanet->Randomize();
-        break;
-
-    case 117: // 'u' and 'U'
-    case 85:
-        bUpdate = !bUpdate;
-        break;
-
-    case 13:
-        //        if (bAltActive)
-        //        {
-        //            if (bFullscreen)
-        //            {
-        //                glutReshapeWindow(STARTING_WINDOW_SIZE_X, STARTING_WINDOW_SIZE_Y);
-        //                glutPositionWindow(WINDOW_OFFSET, WINDOW_OFFSET);
-        //            }
-        //            else
-        //            {
-        //                glutFullScreen();
-        //            }
-
-        //            bFullscreen = !bFullscreen;
-        //        }
-        break;
-
-    default:
-
-        break;
-    }
-}
-
-void GLWidget::loopFunction()
-{
-    //    if (bUpdate)
-    //    {
-    //        pTestData->generateMeshForTime(fTime);
-    //        fTime += 0.003f;
-    //    }
-
-    //    glutPostRedisplay();
-}
-
-void GLWidget::mouseMotion(int x, int y)
-{
-    int xChange = MOUSE_X - x;
-    int yChange = MOUSE_Y - y;
-
-    MOUSE_X = x;
-    MOUSE_Y = y;
-
-    if (xChange == 0 && yChange == 0)
-    {
-        return;
-    }
-
-    Vector3 axis = Vector3(yChange, xChange, 0.0f);
-
-    Matrix rot = Matrix();
-    rot.SetRotation(axis, sqrt((float)abs(xChange) + (float)abs(yChange)));
-
-    rotation.RotateBy(rot);
-}
-
-void GLWidget::mouseMove(int button, int state, int x, int y)
-{
-    MOUSE_X = x;
-    MOUSE_Y = y;
 }
 
 void GLWidget::nextShape()
