@@ -17,6 +17,8 @@ public:
 
     float fBmWithExtraCalc(float x, float y, int depth);
 
+    int getSeed();
+
     float noise(float x);
     float noise(float x, float y);
     float noise(float x, float y, float z);

@@ -26,9 +26,12 @@ PlanetGraphicsScene::PlanetGraphicsScene(QObject *parent) :
         QGraphicsScene(parent)
 {
     //setup a FPS dialog window
+    m_pFpsLabel = new QLabel(tr("FPS:"));
+    m_pSeedLabel = new QLabel(tr("seed:"));
+
     QWidget *stats = createWidget(tr("stats"));
-    stats->layout()->addWidget(new QLabel(tr("fps: 100000")));
-    stats->layout()->addWidget(new QLabel(tr("seed: 123456")));
+    stats->layout()->addWidget(m_pFpsLabel);
+    stats->layout()->addWidget(m_pSeedLabel);
 
     addWidget(stats);
 
@@ -75,6 +78,10 @@ void PlanetGraphicsScene::createRandomNoise()
 
     pTestNoise = new Noise(rand());
     pTestData = new SimpleMeshData(pTestNoise);
+
+    QString numPart;
+    numPart.setNum(pTestNoise->getSeed());
+    m_pSeedLabel->setText(tr("seed: ") + numPart);
 }
 
 QWidget *PlanetGraphicsScene::createWidget(const QString &widgetTitle) const
@@ -82,7 +89,7 @@ QWidget *PlanetGraphicsScene::createWidget(const QString &widgetTitle) const
     QWidget *widget = new QWidget(0, Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
     widget->setStyle(new QPlastiqueStyle());
-    widget->setWindowOpacity(0.2);
+    widget->setWindowOpacity(0.5);
     widget->setWindowTitle(widgetTitle);
     widget->setLayout(new QVBoxLayout());
 
@@ -343,12 +350,14 @@ void PlanetGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *pMouseEvent)
 {
     QGraphicsScene::mouseMoveEvent(pMouseEvent);
 
-    if (pMouseEvent->isAccepted()) return;
+    if (pMouseEvent->isAccepted())
+    {
+        return;
+    }
 
     if (pMouseEvent->buttons() & Qt::LeftButton) {
         const QPointF delta = pMouseEvent->scenePos() - pMouseEvent->lastScenePos();
 
-        cout << "delta (" << delta.x() << ", " << delta.y() << ")" << endl;
         Vector3 axis = Vector3(-delta.y(), -delta.x(), 0.0f);
         Matrix rot = Matrix();
         rot.SetRotation(axis, sqrt((float)abs(delta.x()) + (float)abs(delta.y())));

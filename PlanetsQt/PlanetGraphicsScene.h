@@ -7,6 +7,7 @@
 #include "Matrix.h"
 
 class QKeyEvent;
+class QLabel;
 class QMouseEvent;
 class QPainter;
 
@@ -38,6 +39,9 @@ protected:
     void            mouseMoveEvent(QGraphicsSceneMouseEvent *pMouseEvent);
 
 private:
+    QLabel          *m_pFpsLabel;
+    QLabel          *m_pSeedLabel;
+
     bool            bPaused;
     float           fTime;
     Matrix          rotation;

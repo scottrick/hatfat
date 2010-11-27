@@ -67,6 +67,11 @@ float Noise::fBmWithExtraCalc(float x, float y, int depth)
     return fValue * fValue;
 }
 
+int Noise::getSeed()
+{
+    return m_dwSeed;
+}
+
 float Noise::noise(float x)
 {
     int intA = (int)floor(x);
