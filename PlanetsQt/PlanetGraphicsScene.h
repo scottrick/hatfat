@@ -42,6 +42,10 @@ private:
     QLabel          *m_pFpsLabel;
     QLabel          *m_pSeedLabel;
 
+    //opengl settings
+    bool            bMultisampling;
+    bool            bDepth;
+
     bool            bPaused;
     float           fTime;
     Matrix          rotation;

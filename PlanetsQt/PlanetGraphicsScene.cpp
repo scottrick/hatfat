@@ -105,6 +105,24 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         return;
     }
 
+    if (bMultisampling)
+    {
+        glEnable(GL_MULTISAMPLE);
+    }
+    else
+    {
+        glDisable(GL_MULTISAMPLE);
+    }
+
+    if (bDepth)
+    {
+        glEnable(GL_DEPTH_TEST);
+    }
+    else
+    {
+        glDisable(GL_DEPTH_TEST);
+    }
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -244,6 +262,9 @@ void PlanetGraphicsScene::drawScene()
 
 void PlanetGraphicsScene::initialize()
 {
+    bDepth = true;
+    bMultisampling = true;
+
     pTestNoise      = 0;
     pTestData       = 0;
 
@@ -293,10 +314,6 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
         currentMode = NOISE_TEST;
         break;
 
-    case 'm':
-        rotation.Dump();
-        break;
-
     case 112: // 'p' and 'P'
     case 80:
         bPaused = !bPaused;
@@ -339,6 +356,16 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
     case 93: // ']' and '}'
     case 125:
         nextShape();
+        break;
+
+    case 'd':
+    case 'D':
+        bDepth = !bDepth;
+        break;
+
+    case 'm':
+    case 'M':
+        bMultisampling = !bMultisampling;
         break;
 
     case 32: //spacebar
