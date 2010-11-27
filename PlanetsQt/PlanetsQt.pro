@@ -48,7 +48,9 @@ SOURCES += main.cpp\
     FragmentShader.cpp \
     CubeProgram.cpp \
     BrickProgram.cpp \
-    hatfat/glee/GLee.c
+    hatfat/glee/GLee.c \
+    GraphicsView.cpp \
+    PlanetGraphicsScene.cpp
 
 HEADERS  += \
     GLWidget.h \
@@ -72,7 +74,9 @@ HEADERS  += \
     def.h \
     CubeProgram.h \
     BrickProgram.h \
-    hatfat/glee/GLee.h
+    hatfat/glee/GLee.h \
+    GraphicsView.h \
+    PlanetGraphicsScene.h
 
 FORMS    +=
 

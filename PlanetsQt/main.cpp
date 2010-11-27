@@ -1,10 +1,16 @@
 #include <QtGui/QApplication>
 #include <QApplication>
+#include <QGLWidget>
+#include <QIcon>
 
-#include "GLWidget.h"
+#include "GraphicsView.h"
+#include "PlanetGraphicsScene.h"
 
-bool        bApplicationRunning     = true;
-GLWidget    *pGLWidget              = 0;
+#include <iostream>
+using namespace std;
+
+bool                    bApplicationRunning     = true;
+PlanetGraphicsScene     *pPlanetScene           = 0;
 
 void refreshAll();
 
@@ -12,21 +18,32 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    pGLWidget = new GLWidget();
-    pGLWidget->show();
+    QGLWidget glWidget(QGLFormat(QGL::SampleBuffers));
+    pPlanetScene = new PlanetGraphicsScene();
+    GraphicsView view;
+
+    view.setWindowIcon(QIcon(":/planets/resources/icon.xpm"));
+
+    view.setViewport(&glWidget);
+    view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    view.setScene(pPlanetScene);
+
+    view.showFullScreen();
+//    view.show();
+//    view.resize(800, 600);
 
     while (bApplicationRunning)
     {
         a.processEvents();
         refreshAll();
 
-        pGLWidget->updateGL();
+        pPlanetScene->update();
     }
 
-//    return a.exec();
+    delete pPlanetScene;
 }
 
 void refreshAll()
 {
-    pGLWidget->refresh();
+    pPlanetScene->refresh();
 }
