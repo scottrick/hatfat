@@ -2,6 +2,7 @@
 
 #include "hatfat/glee/GLee.h"
 
+#include <QDateTime>
 #include <QDialog>
 #include <QGLWidget>
 #include <QGraphicsItem>
@@ -126,6 +127,8 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         drawNoise();
         break;
     }
+
+    ++m_fpsCounter;
 }
 
 void PlanetGraphicsScene::drawNoise()
@@ -244,6 +247,9 @@ void PlanetGraphicsScene::initialize()
     pTestNoise      = 0;
     pTestData       = 0;
 
+    m_fpsCounter = 0;
+    m_lastTimeUpdate = QDateTime::currentMSecsSinceEpoch();
+
     initializeNoise();
 
     pPlanet = new Planet();
@@ -254,7 +260,7 @@ void PlanetGraphicsScene::initialize()
     currentShape        = SPHERE;
     currentMode         = NOISE_TEST;//SHADER;
     //    bFullscreen         = false;
-    bPaused             = false;
+    bPaused             = true;
     //    varLoc              = -1;
 
     PLANET_RADIUS       = 1.0f;
@@ -386,9 +392,21 @@ void PlanetGraphicsScene::prevShape()
 
 void PlanetGraphicsScene::refresh()
 {
-    if (bPaused)
+    if (!bPaused)
     {
         pTestData->generateMeshForTime(fTime);
         fTime += 0.003f;
+    }
+
+    qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+
+    if (currentTime - m_lastTimeUpdate > 1000)
+    {
+        m_lastTimeUpdate += 1000;
+
+        QString num;
+        num.setNum(m_fpsCounter);
+        m_pFpsLabel->setText(num + tr(" fps"));
+        m_fpsCounter = 0;
     }
 }

@@ -5,7 +5,7 @@ using namespace std;
 
 #include "Noise.h"
 
-#define TEST_NOISE_DIMENSION_SIZE 5.0f
+#define TEST_NOISE_DIMENSION_SIZE 8.0f
 #define VERTEX_STEP 0.1f
 
 #define TEST_NOISE_X_MIN -TEST_NOISE_DIMENSION_SIZE
@@ -69,15 +69,6 @@ void SimpleMeshData::generateMeshForTime(float fTime)
             fValue = m_pNoise->fBm(TEST_NOISE_X_MIN + VERTEX_STEP * x, TEST_NOISE_Y_MIN + VERTEX_STEP * y, fTime, 4);
             //m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = m_pNoise->fBm(TEST_NOISE_X_MIN + VERTEX_STEP * x, TEST_NOISE_Y_MIN + VERTEX_STEP * y, 1);
 
-            if (fValue < -0.15f)
-            {
-                m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = -0.15f;
-            }
-            else
-            {
-                m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = fValue;
-            }
-
             if (fValue > 0.9f)
             {
                 m_pColors[(y * m_NumberInRowY + x)] = 0xffffffff;
@@ -89,6 +80,16 @@ void SimpleMeshData::generateMeshForTime(float fTime)
             else
             {
                 m_pColors[(y * m_NumberInRowY + x)] = 0xffff0000;
+            }
+
+            if (fValue < -0.15f)
+            {
+                m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = -0.15f;
+            }
+            else
+            {
+                fValue *= 0.5f;
+                m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = fValue;
             }
         }
     }

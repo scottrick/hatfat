@@ -65,6 +65,9 @@ private:
     float           MIN_CAMERA_DISTANCE;
     float           g_fCameraDistance;
 
+    int             m_fpsCounter;
+    qint64          m_lastTimeUpdate;
+
 signals:
 
 public slots:
