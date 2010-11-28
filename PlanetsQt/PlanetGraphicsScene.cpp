@@ -99,6 +99,10 @@ QWidget *PlanetGraphicsScene::createWidget(const QString &widgetTitle) const
 
 void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
+    //initialize the shader manager
+    ShaderManager::get();
+    ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
+
     if (painter->paintEngine()->type() != QPaintEngine::OpenGL && painter->paintEngine()->type() != QPaintEngine::OpenGL2)
     {
         cout << "PaintEnginer of incorrect type! (type " << painter->paintEngine()->type() << ")" << endl;
@@ -207,9 +211,9 @@ void PlanetGraphicsScene::drawScene()
     ShaderManager::get().GetActiveProgram()->Activate();
 
     glBegin(GL_TRIANGLES);
-    glVertex3f(-1.0f, 1.0f, 0.0f);
-    glVertex3f(-1.0f, -1.0f, 0.0f);
-    glVertex3f(1.0f, 1.0f, 0.0f);
+    glVertex3f(-1.0f, 1.0f, 0.1f);
+    glVertex3f(-1.0f, -1.0f, 0.1f);
+    glVertex3f(1.0f, 1.0f, 0.1f);
     glEnd();
 
     switch (currentShape)
@@ -288,10 +292,6 @@ void PlanetGraphicsScene::initialize()
     MAX_CAMERA_DISTANCE = PLANET_RADIUS * 20.0f;
     MIN_CAMERA_DISTANCE = PLANET_RADIUS * 1.1f;
     g_fCameraDistance   = PLANET_RADIUS * 2.5f;
-
-    //initialize the shader manager
-    ShaderManager::get();
-    ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
 }
 
 void PlanetGraphicsScene::initializeNoise()
