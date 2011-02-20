@@ -50,7 +50,11 @@ SOURCES += main.cpp\
     BrickProgram.cpp \
     hatfat/glee/GLee.c \
     GraphicsView.cpp \
-    PlanetGraphicsScene.cpp
+    PlanetGraphicsScene.cpp \
+    ZVertex.cpp \
+    ZVertexArray.cpp \
+    RoamMesh.cpp \
+    ZTriangle.cpp
 
 HEADERS  += \
     GLWidget.h \
@@ -76,7 +80,11 @@ HEADERS  += \
     BrickProgram.h \
     hatfat/glee/GLee.h \
     GraphicsView.h \
-    PlanetGraphicsScene.h
+    PlanetGraphicsScene.h \
+    ZVertex.h \
+    ZVertexArray.h \
+    RoamMesh.h \
+    ZTriangle.h
 
 FORMS    +=
 

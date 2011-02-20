@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QGLWidget glWidget(QGLFormat(QGL::SampleBuffers));
-    pPlanetScene = new PlanetGraphicsScene();
     GraphicsView view;
+    pPlanetScene = new PlanetGraphicsScene(&view);
 
     view.setWindowIcon(QIcon(":/planets/resources/icon.xpm"));
 
@@ -28,9 +28,17 @@ int main(int argc, char *argv[])
     view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     view.setScene(pPlanetScene);
 
-    view.showFullScreen();
-//    view.show();
-//    view.resize(800, 600);
+    view.move(80, 60);
+    view.resize(800, 600);
+
+    if (view.isFullScreen())
+    {
+        view.showFullScreen();
+    }
+    else
+    {
+        view.show();
+    }
 
     while (bApplicationRunning)
     {

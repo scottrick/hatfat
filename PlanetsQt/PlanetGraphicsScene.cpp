@@ -14,8 +14,10 @@
 #include <QPlastiqueStyle>
 #include <QVBoxLayout>
 
+#include "GraphicsView.h"
 #include "Noise.h"
 #include "PlanetProgramOne.h"
+#include "RoamMesh.h"
 #include "ShaderManager.h"
 #include "SimpleMeshData.h"
 
@@ -23,9 +25,12 @@
 #include <iostream>
 using namespace std;
 
-PlanetGraphicsScene::PlanetGraphicsScene(QObject *parent) :
+PlanetGraphicsScene::PlanetGraphicsScene(GraphicsView *pGraphicsView, QObject *parent) :
         QGraphicsScene(parent)
 {
+    m_pGraphicsView = pGraphicsView;
+    bFullscreen = false;
+
     //setup a FPS dialog window
     m_pFpsLabel = new QLabel(tr("FPS:"));
     m_pSeedLabel = new QLabel(tr("seed:"));
@@ -99,8 +104,6 @@ QWidget *PlanetGraphicsScene::createWidget(const QString &widgetTitle) const
 
 void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
-    //initialize the shader manager
-    ShaderManager::get();
     ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
 
     if (painter->paintEngine()->type() != QPaintEngine::OpenGL && painter->paintEngine()->type() != QPaintEngine::OpenGL2)
@@ -210,54 +213,13 @@ void PlanetGraphicsScene::drawScene()
 
     ShaderManager::get().GetActiveProgram()->Activate();
 
-    glBegin(GL_TRIANGLES);
-    glVertex3f(-1.0f, 1.0f, 0.1f);
-    glVertex3f(-1.0f, -1.0f, 0.1f);
-    glVertex3f(1.0f, 1.0f, 0.1f);
-    glEnd();
+    pRoamMesh->Render();
 
-    switch (currentShape)
-    {
-    case CONE:
-        //glutSolidCone(PLANET_RADIUS / 3.0, PLANET_RADIUS, 45, 45);
-        break;
-
-    case CUBE:
-        //glutSolidCube(PLANET_RADIUS);
-        break;
-
-    case DODECAHEDRON:
-        //glutSolidDodecahedron();
-        break;
-
-    case ICOSAHEDRON:
-        //glutSolidIcosahedron();
-        break;
-
-    case OCTAHEDRON:
-        //glutSolidOctahedron();
-        break;
-
-    case SPHERE:
-        //glutSolidSphere(PLANET_RADIUS, 45, 45);
-        break;
-
-    case TEAPOT:
-        //glutSolidTeapot(PLANET_RADIUS);
-        break;
-
-    case TETRAHEDRON:
-        //glutSolidTetrahedron();
-        break;
-
-    case TORUS:
-        //glutSolidTorus(PLANET_RADIUS / 2.0, PLANET_RADIUS, 45, 45);
-        break;
-
-    default:
-        //       assert(0 && "invalid current shape!");
-        break;
-    }
+//    glBegin(GL_TRIANGLES);
+//    glVertex3f(-1.0f, 1.0f, 0.1f);
+//    glVertex3f(-1.0f, -1.0f, 0.1f);
+//    glVertex3f(1.0f, 1.0f, 0.1f);
+//    glEnd();
 
     glUseProgram(0);
 
@@ -280,10 +242,12 @@ void PlanetGraphicsScene::initialize()
     pPlanet = new Planet();
     pPlanet->Randomize();
 
+    pRoamMesh = new RoamMesh();
+
     fTime = 0.0f;
 
     currentShape        = SPHERE;
-    currentMode         = NOISE_TEST;//SHADER;
+    currentMode         = SHADER;//NOISE_TEST;//SHADER;
     //    bFullscreen         = false;
     bPaused             = true;
     //    varLoc              = -1;
@@ -337,6 +301,20 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
         {
             exit(1);
         }
+        break;
+    case 'f':
+    case 'F':
+        if (bFullscreen)
+        {
+            m_pGraphicsView->move(80, 60);
+            m_pGraphicsView->resize(800, 600);
+        }
+        else
+        {
+            m_pGraphicsView->showFullScreen();
+        }
+
+        bFullscreen = !bFullscreen;
         break;
     case 46: // '>' and '.'
     case 62:

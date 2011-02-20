@@ -12,20 +12,18 @@ class Unknown
 public:
     Unknown();
 
-    virtual void				AddRef();
-    virtual const char			*GetClassDebugName() const			= 0;
-    int							GetRefCount() const					{ return m_RefCount; }
-    virtual void				Print(int indent) const				= 0;
-    virtual void				Release();
+    virtual void        AddRef();
+    int                 GetRefCount() const         { return m_RefCount; }
+    virtual void        Release();
 
 protected:
     virtual ~Unknown();
 
-    int							m_RefCount;
+    int m_RefCount;
 
 private:
 
-    void						Init();
+    void Init();
 
 };
 

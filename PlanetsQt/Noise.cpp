@@ -18,7 +18,7 @@ float Noise::fBm(float x, int depth)
     {
         fResult += noise(x * fWeight);
 
-        x		*= 2.0f;
+        x *= 2.0f;
         fWeight *= 0.5f;
     }
 
@@ -34,8 +34,8 @@ float Noise::fBm(float x, float y, int depth)
     {
         fResult += noise(x, y) * fWeight;
 
-        x		*= 2.0f;
-        y		*= 2.0f;
+        x *= 2.0f;
+        y *= 2.0f;
         fWeight *= 0.5f;
     }
 
@@ -51,9 +51,9 @@ float Noise::fBm(float x, float y, float z, int depth)
     {
         fResult += noise(x, y, z) * fWeight;
 
-        x		*= 2.0f;
-        y		*= 2.0f;
-        z		*= 2.0f;
+        x *= 2.0f;
+        y *= 2.0f;
+        z *= 2.0f;
         fWeight *= 0.5f;
     }
 
@@ -153,7 +153,6 @@ float Noise::noise(int x)
 
 float Noise::noise(int x, int y)
 {
-    //	x = (x + y) * m_dwSeed;
     x = x + (m_dwSeed * y) + ((m_dwSeed * 7 ) << 2);
     x = (x << 13) ^ x;
 

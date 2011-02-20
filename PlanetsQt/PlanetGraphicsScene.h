@@ -11,9 +11,11 @@ class QLabel;
 class QMouseEvent;
 class QPainter;
 
+class GraphicsView;
 class Noise;
 class Planet;
 class SimpleMeshData;
+class RoamMesh;
 
 enum MODE { SHADER, NOISE_TEST };
 enum SHAPE { SPHERE, TEAPOT, CONE, CUBE, DODECAHEDRON, ICOSAHEDRON, OCTAHEDRON, TETRAHEDRON, TORUS, LAST_SHAPE };
@@ -22,7 +24,9 @@ class PlanetGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit PlanetGraphicsScene(QObject *parent = 0);
+    explicit PlanetGraphicsScene(GraphicsView *pGraphicsView, QObject *parent = 0);
+
+    bool        isFullscreen() { return bFullscreen; }
 
     void        drawBackground(QPainter *painter, const QRectF &);
     void        nextShape();
@@ -42,6 +46,11 @@ private:
     QLabel          *m_pFpsLabel;
     QLabel          *m_pSeedLabel;
 
+    GraphicsView    *m_pGraphicsView;
+    bool            bFullscreen;
+
+    //opengl settings
+    //opengl settings
     //opengl settings
     bool            bMultisampling;
     bool            bDepth;
@@ -53,6 +62,7 @@ private:
     Noise           *pTestNoise;
     SimpleMeshData  *pTestData;
     Planet          *pPlanet;
+    RoamMesh        *pRoamMesh;
 
     SHAPE           currentShape;
     MODE            currentMode;
@@ -62,7 +72,6 @@ private:
     void            drawScene();
     void            initialize();
     void            initializeNoise();
-    void            initializeGL();
 
     float           PLANET_RADIUS;
     float           MAX_CAMERA_DISTANCE;

@@ -10,38 +10,46 @@ using namespace std;
 #define PI                                  3.141592654f
 #define GAME_FOV                            60.0f
 
-static float				InvSqrt(float x);
+static float                                InvSqrt(float x);
 
 struct VECTOR2
 {
-    VECTOR2()											{ x = 0.0f;		y = 0.0f; }
-    VECTOR2(float fX, float fY)							{ x = fX;		y = fY; }
+    VECTOR2() : x(0.0f), y(0.0f) { }
+    VECTOR2(float fX, float fY)	: x(fX), y(fY) { }
 
     float x, y;
 };
 
 struct VECTOR3
 {
-    VECTOR3()											{ x = 0.0f;		y = 0.0f;		z = 0.0f; }
-    VECTOR3(float fX, float fY, float fZ)				{ x = fX;		y = fY;			z = fZ; }
+    VECTOR3() : x(0.0f), y(0.0f), z(0.0f) { }
+    VECTOR3(float fX, float fY, float fZ) : x(fX), y(fY), z(fZ) { }
 
     float x, y, z;
 
-    VECTOR3 operator- (VECTOR3 vSub)					{ VECTOR3 temp; temp.x = x - vSub.x; temp.y = y - vSub.y; temp.z = vSub.z; return temp; }
+    VECTOR3 operator- (VECTOR3 vSub)
+    { VECTOR3 temp; temp.x = x - vSub.x; temp.y = y - vSub.y; temp.z = vSub.z; return temp; }
+
+    void Set(const float &x, const float &y, const float &z)
+    {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
 };
 
 struct VECTOR4
 {
-    VECTOR4()											{ x = 0.0f;		y = 0.0f;		z = 0.0f;		w = 0.0f; }
-    VECTOR4(float fX, float fY, float fZ, float fW)		{ x = fX;		y = fY;			z = fZ;			w = fW; }
+    VECTOR4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) { }
+    VECTOR4(float fX, float fY, float fZ, float fW) : x(fX), y(fY), z(fZ), w(fW) { }
 
     float x, y, z, w;
 };
 
 struct VECTOR2_INT
 {
-    VECTOR2_INT()										{ x = 0;		y = 0; }
-    VECTOR2_INT(int dwX, int dwY)						{ x = dwX;		y = dwY; }
+    VECTOR2_INT() : x(0), y(0) { }
+    VECTOR2_INT(int dwX, int dwY) : x(dwX), y(dwY) { }
 
     int x, y;
 };
