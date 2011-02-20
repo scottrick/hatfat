@@ -28,7 +28,6 @@ CONFIG += console
 TEMPLATE = app
 \
 SOURCES += main.cpp\
-    GLWidget.cpp \
     VertexShader.cpp \
     Vector3.cpp \
     Unknown.cpp \
@@ -57,7 +56,6 @@ SOURCES += main.cpp\
     ZTriangle.cpp
 
 HEADERS  += \
-    GLWidget.h \
     VertexShader.h \
     Vector3.h \
     Unknown.h \
