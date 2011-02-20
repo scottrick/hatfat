@@ -25,12 +25,6 @@ public:
     void            releaseVertex(unsigned short index);
     void            updateVertex(unsigned short index);
 
-//    void            enableVertexStuff();
-//    void            disableVertexStuff();
-
-    void            enableNormalArray();
-    void            disableNormalArray();
-
     void            initRender();
     void            finishRender();
 

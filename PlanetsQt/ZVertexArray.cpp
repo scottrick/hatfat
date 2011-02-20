@@ -41,29 +41,6 @@ void ZVertexArray::updateVertex(unsigned short index)
     m_pUpdated[index] = 1;
 }
 
-//void ZVertexArray::enableVertexStuff()
-//{
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//    glVertexPointer(3, GL_FLOAT, sizeof(ZVertex), 0);
-//}
-
-//void ZVertexArray::disableVertexStuff()
-//{
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-//    glDisableClientState(GL_VERTEX_ARRAY);
-//}
-
-void ZVertexArray::enableNormalArray()
-{
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glNormalPointer(GL_FLOAT, sizeof(ZVertex), (void *)sizeof(VECTOR3));
-}
-
-void ZVertexArray::disableNormalArray()
-{
-    glDisableClientState(GL_NORMAL_ARRAY);
-}
-
 void ZVertexArray::initGL()
 {
     glGenBuffers(1, &vertexBuffer);
@@ -87,17 +64,12 @@ void ZVertexArray::initGL()
 
 void ZVertexArray::initRender()
 {
-//    enableNormalArray();
-//    enableVertexStuff();
-
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, sizeof(ZVertex), 0);
 
     ZVertex *pVideoBuffer = (ZVertex *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-//    cout << "videoBuffer = 0x" << hex << pVideoBuffer << dec << endl;
 
     //Update any vertices that have changed!
     for (unsigned short i = 0; i < VERTEX_ARRAY_SIZE; ++i)
@@ -118,7 +90,6 @@ void ZVertexArray::initRender()
     {
         cout << "failed to unmap!" << endl;
     }
-//    cout << "unmapped? " << unmap << endl;
 }
 
 void ZVertexArray::finishRender()
@@ -126,6 +97,5 @@ void ZVertexArray::finishRender()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glDisableClientState(GL_VERTEX_ARRAY);
-//    disableNormalArray();
-//    disableVertexStuff();
+    glDisableClientState(GL_NORMAL_ARRAY);
 }

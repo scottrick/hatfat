@@ -29,7 +29,6 @@ PlanetGraphicsScene::PlanetGraphicsScene(GraphicsView *pGraphicsView, QObject *p
         QGraphicsScene(parent)
 {
     m_pGraphicsView = pGraphicsView;
-    bFullscreen = false;
 
     //setup a FPS dialog window
     m_pFpsLabel = new QLabel(tr("FPS:"));
@@ -215,12 +214,6 @@ void PlanetGraphicsScene::drawScene()
 
     pRoamMesh->Render();
 
-//    glBegin(GL_TRIANGLES);
-//    glVertex3f(-1.0f, 1.0f, 0.1f);
-//    glVertex3f(-1.0f, -1.0f, 0.1f);
-//    glVertex3f(1.0f, 1.0f, 0.1f);
-//    glEnd();
-
     glUseProgram(0);
 
     glPopMatrix();
@@ -228,6 +221,7 @@ void PlanetGraphicsScene::drawScene()
 
 void PlanetGraphicsScene::initialize()
 {
+    bFullscreen = false;
     bDepth = true;
     bMultisampling = true;
 
@@ -247,10 +241,8 @@ void PlanetGraphicsScene::initialize()
     fTime = 0.0f;
 
     currentShape        = SPHERE;
-    currentMode         = SHADER;//NOISE_TEST;//SHADER;
-    //    bFullscreen         = false;
+    currentMode         = SHADER;
     bPaused             = true;
-    //    varLoc              = -1;
 
     PLANET_RADIUS       = 1.0f;
     MAX_CAMERA_DISTANCE = PLANET_RADIUS * 20.0f;
