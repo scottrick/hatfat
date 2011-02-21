@@ -10,13 +10,14 @@ class ZVertex
 public:
     ZVertex();
 
-//    static ZVertexArray array;
+    void setPos(const float &x, const float &y, const float &z);
+    void setNormal(const float &x, const float &y, const float &z);
+    void dump();
 
+private:
     VECTOR3 m_vPos; //position
     VECTOR3 m_vNrm; //normal
-
 //    float   m_fTexCoord[4]; //two pairs of texture coordinates
-    void dump();
 };
 
 #endif // ZVERTEX_H

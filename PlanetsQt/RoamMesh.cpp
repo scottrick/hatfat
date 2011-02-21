@@ -18,7 +18,7 @@ RoamMesh::RoamMesh()
 
     m_pIndices = new unsigned short[NUMBER_OF_INDICES];
 
-    InitTest();
+    setupBaseTriangles();
 }
 
 RoamMesh::~RoamMesh()
@@ -49,34 +49,7 @@ void RoamMesh::initGL()
 
     m_pVertexArray->initGL();
 
-//    //setup the index array
-//    glGenBuffers(1, &indexBuffer);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, NUMBER_OF_INDICES * sizeof(unsigned short), m_pIndices, GL_STREAM_DRAW);
-
     bGLReady = true;
-}
-
-void RoamMesh::InitTest()
-{
-    unsigned short indices[4];
-    indices[0] = m_pVertexArray->getVertex();
-    indices[1] = m_pVertexArray->getVertex();
-    indices[2] = m_pVertexArray->getVertex();
-    indices[3] = m_pVertexArray->getVertex();
-
-    (*m_pVertexArray)[0]->m_vPos.Set(-1.0f, 1.0f, 0.1f);
-    (*m_pVertexArray)[1]->m_vPos.Set(-1.0f, -1.0f, 0.1f);
-    (*m_pVertexArray)[2]->m_vPos.Set(1.0f, 1.0f, 0.1f);
-    (*m_pVertexArray)[3]->m_vPos.Set(1.0f, -1.0f, 0.1f);
-
-    m_pVertexArray->updateVertex(indices[0]); //need to hook this into the triangle somehow?
-    m_pVertexArray->updateVertex(indices[1]);
-    m_pVertexArray->updateVertex(indices[2]);
-    m_pVertexArray->updateVertex(indices[3]);
-
-    m_pTestTriangle = new ZTriangle(indices[0], indices[1], indices[2]);
-    m_pTriTwo = new ZTriangle(indices[2], indices[1], indices[3]);
 }
 
 void RoamMesh::Render()
@@ -88,14 +61,94 @@ void RoamMesh::Render()
 
     //update index buffer
     unsigned short index = 0;
-    m_pTestTriangle->PrepareDraw(m_pIndices, index);
-    m_pTriTwo->PrepareDraw(m_pIndices, index);
+
+    list<ZTriangle *>::iterator iter = m_BaseTriangles.begin();
+    while (iter != m_BaseTriangles.end())
+    {
+        (*iter)->PrepareDraw(m_pIndices, index);
+        iter++;
+    }
 
     m_pVertexArray->initRender();
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, m_pIndices);
+
+    glDrawElements(GL_TRIANGLES, index, GL_UNSIGNED_SHORT, m_pIndices);
 
     m_pVertexArray->finishRender();
+}
+
+void RoamMesh::setupBaseTriangles()
+{
+    unsigned short ind[8];
+
+    for (int i = 0; i < 8; ++i)
+    {
+        ind[i] = m_pVertexArray->getVertex();
+    }
+
+    /*
+     Base Triangles
+
+       4 - - - - - 5
+      /|          /|
+     0 + - - - - 1 |
+     | |         | |
+     | |         | |
+     | 6 - - - - + 7
+     |/          |/
+     2 - - - - - 3
+     */
+
+    (*m_pVertexArray)[ind[0]]->setPos(-1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[1]]->setPos(1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[2]]->setPos(-1.0f, -1.0f, -1.0f);
+    (*m_pVertexArray)[ind[3]]->setPos(1.0f, -1.0f, -1.0f);
+    (*m_pVertexArray)[ind[4]]->setPos(-1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[5]]->setPos(1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[6]]->setPos(-1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[7]]->setPos(1.0f, -1.0f, 1.0f);
+
+    (*m_pVertexArray)[ind[0]]->setNormal(-1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[1]]->setNormal(1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[2]]->setNormal(-1.0f, -1.0f, -1.0f);
+    (*m_pVertexArray)[ind[3]]->setNormal(1.0f, -1.0f, -1.0f);
+    (*m_pVertexArray)[ind[4]]->setNormal(-1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[5]]->setNormal(1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[6]]->setNormal(-1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[7]]->setNormal(1.0f, -1.0f, 1.0f);
+
+    ZTriangle *pTri[12];
+
+    //front
+    pTri[0] = new ZTriangle(ind[1], ind[0], ind[2], m_pVertexArray);
+    pTri[1] = new ZTriangle(ind[1], ind[2], ind[3], m_pVertexArray);
+
+    //back
+    pTri[2] = new ZTriangle(ind[4], ind[5], ind[7], m_pVertexArray);
+    pTri[3] = new ZTriangle(ind[4], ind[7], ind[6], m_pVertexArray);
+
+    //right
+    pTri[4] = new ZTriangle(ind[5], ind[1], ind[3], m_pVertexArray);
+    pTri[5] = new ZTriangle(ind[5], ind[3], ind[7], m_pVertexArray);
+
+    //left
+    pTri[6] = new ZTriangle(ind[0], ind[4], ind[6], m_pVertexArray);
+    pTri[7] = new ZTriangle(ind[0], ind[6], ind[2], m_pVertexArray);
+
+    //top
+    pTri[8] = new ZTriangle(ind[5], ind[4], ind[0], m_pVertexArray);
+    pTri[9] = new ZTriangle(ind[5], ind[0], ind[1], m_pVertexArray);
+
+    //bottom
+    pTri[10] = new ZTriangle(ind[3], ind[2], ind[6], m_pVertexArray);
+    pTri[11] = new ZTriangle(ind[3], ind[6], ind[7], m_pVertexArray);
+
+
+    for (int i = 0; i < 12; ++i)
+    {
+        m_BaseTriangles.push_back(pTri[i]);
+        pTri[i]->UpdateVertices();
+    }
 }
 
 void RoamMesh::setVertexArray(ZVertexArray *newArray)

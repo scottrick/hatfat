@@ -3,6 +3,9 @@
 
 #include "hatfat/glee/GLee.h"
 
+#include <list>
+using namespace std;
+
 class ZTriangle;
 class ZVertexArray;
 
@@ -16,8 +19,8 @@ public:
 
 protected:
     ZVertexArray        *m_pVertexArray;
-    ZTriangle           *m_pTestTriangle;
-    ZTriangle           *m_pTriTwo;
+
+    list<ZTriangle *>   m_BaseTriangles;
 
     GLuint              indexBuffer;
     unsigned short      *m_pIndices; //index buffer
@@ -26,10 +29,10 @@ protected:
 
 private:
     void                initGL();
-    void                InitTest();
+
+    void                setupBaseTriangles();
 
     bool                bGLReady;
-
 };
 
 #endif // ROAMMESH_H

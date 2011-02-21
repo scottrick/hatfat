@@ -1,14 +1,19 @@
 #ifndef ZTRIANGLE_H
 #define ZTRIANGLE_H
 
+class ZVertexArray;
+
 class ZTriangle
 {
 public:
-    ZTriangle(unsigned short v1, unsigned short v2, unsigned short v3);
+    ZTriangle(unsigned short v1, unsigned short v2, unsigned short v3, ZVertexArray *array);
+
+    ZVertexArray *m_pVertexArray;
 
     unsigned short m_Vertex[3]; //indices into the vertex array, for the vertices
 
     void PrepareDraw(unsigned short *array, unsigned short &index);
+    void UpdateVertices();
 
 //    CROAMTriangle *m_pEdge[3]; // Pointers to edge neighbors
 //    CROAMTriangle *m_pParent; // Pointer to the parent triangle

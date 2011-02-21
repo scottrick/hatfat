@@ -69,6 +69,12 @@ void ZVertexArray::initRender()
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, sizeof(ZVertex), 0);
 
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    //last param is offset into the buffer.  Since the normals are after the position information,
+    //its just the size of the position data
+    glNormalPointer(GL_FLOAT, sizeof(ZVertex), (void *)sizeof(VECTOR3));
+
     ZVertex *pVideoBuffer = (ZVertex *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 
     //Update any vertices that have changed!
