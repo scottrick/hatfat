@@ -1,6 +1,7 @@
 #ifndef ZTRIANGLE_H
 #define ZTRIANGLE_H
 
+class ZDiamond;
 class ZVertexArray;
 
 class ZTriangle
@@ -12,8 +13,15 @@ public:
 
     unsigned short m_Vertex[3]; //indices into the vertex array, for the vertices
 
-    void PrepareDraw(unsigned short *array, unsigned short &index);
-    void UpdateVertices();
+    void prepareDraw(unsigned short *array, unsigned short &index);
+    void split();
+    void updateVertices();
+
+    ZTriangle *m_pParent; //parent triangle
+    ZDiamond *m_pDiamond; //diamond, if its in any
+
+    ZTriangle *m_pEdges[3]; //other triangles adjacent to this one
+
 
 //    CROAMTriangle *m_pEdge[3]; // Pointers to edge neighbors
 //    CROAMTriangle *m_pParent; // Pointer to the parent triangle

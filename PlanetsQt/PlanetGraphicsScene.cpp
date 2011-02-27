@@ -210,7 +210,7 @@ void PlanetGraphicsScene::drawScene()
     gluLookAt(0.0, 0.0, g_fCameraDistance, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     glMultMatrixf(rotation.m);
 
-    ShaderManager::get().GetActiveProgram()->Activate();
+//    ShaderManager::get().GetActiveProgram()->Activate();
 
     pRoamMesh->Render();
 
@@ -337,6 +337,22 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
     case 'M':
         bMultisampling = !bMultisampling;
         break;
+
+//    case '3':
+//        pRoamMesh->testIndex++;
+//        if (pRoamMesh->testIndex > 11)
+//        {
+//            pRoamMesh->testIndex = 11;
+//        }
+//        break;
+
+//        case '4':
+//        pRoamMesh->testIndex--;
+//        if (pRoamMesh->testIndex < 0)
+//        {
+//            pRoamMesh->testIndex = 0;
+//        }
+//        break;
 
     case 32: //spacebar
         createRandomNoise();

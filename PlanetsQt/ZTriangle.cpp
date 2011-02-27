@@ -8,16 +8,27 @@ ZTriangle::ZTriangle(unsigned short v1, unsigned short v2, unsigned short v3, ZV
     m_Vertex[1] = v2;
     m_Vertex[2] = v3;
     m_pVertexArray = array;
+
+    m_pParent = 0;
+    m_pDiamond = 0;
+    m_pEdges[0] = 0;
+    m_pEdges[1] = 0;
+    m_pEdges[2] = 0;
 }
 
-void ZTriangle::PrepareDraw(unsigned short *array, unsigned short &index)
+void ZTriangle::prepareDraw(unsigned short *array, unsigned short &index)
 {
     array[index++] = m_Vertex[0];
     array[index++] = m_Vertex[1];
     array[index++] = m_Vertex[2];
 }
 
-void ZTriangle::UpdateVertices()
+void ZTriangle::split()
+{
+
+}
+
+void ZTriangle::updateVertices()
 {
     m_pVertexArray->updateVertex(m_Vertex[0]);
     m_pVertexArray->updateVertex(m_Vertex[1]);

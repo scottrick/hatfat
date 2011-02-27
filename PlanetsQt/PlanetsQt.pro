@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     ZVertex.cpp \
     ZVertexArray.cpp \
     RoamMesh.cpp \
-    ZTriangle.cpp
+    ZTriangle.cpp \
+    ZDiamond.cpp
 
 HEADERS  += \
     VertexShader.h \
@@ -82,7 +83,8 @@ HEADERS  += \
     ZVertex.h \
     ZVertexArray.h \
     RoamMesh.h \
-    ZTriangle.h
+    ZTriangle.h \
+    ZDiamond.h
 
 FORMS    +=
 

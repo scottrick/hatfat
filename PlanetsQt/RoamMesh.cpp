@@ -62,17 +62,32 @@ void RoamMesh::Render()
     //update index buffer
     unsigned short index = 0;
 
-    list<ZTriangle *>::iterator iter = m_BaseTriangles.begin();
-    while (iter != m_BaseTriangles.end())
+    list<ZTriangle *>::iterator iter = m_Triangles.begin();
+    while (iter != m_Triangles.end())
     {
-        (*iter)->PrepareDraw(m_pIndices, index);
+        (*iter)->prepareDraw(m_pIndices, index);
         iter++;
     }
 
+//    list<ZTriangle *>::iterator iter = m_Triangles.begin();
+//    for (int i = 0; i < testIndex; ++i)
+//    {
+//        iter++;
+//    }
+
+//    ZTriangle *pTestTriangle = *iter;
+//    pTestTriangle->prepareDraw(m_pIndices, index);
+//    pTestTriangle->m_pEdges[0]->prepareDraw(m_pIndices, index);
+//    pTestTriangle->m_pEdges[1]->prepareDraw(m_pIndices, index);
+//    pTestTriangle->m_pEdges[2]->prepareDraw(m_pIndices, index);
+
     m_pVertexArray->initRender();
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glDrawElements(GL_TRIANGLES, index, GL_UNSIGNED_SHORT, m_pIndices);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     m_pVertexArray->finishRender();
 }
@@ -146,9 +161,71 @@ void RoamMesh::setupBaseTriangles()
 
     for (int i = 0; i < 12; ++i)
     {
-        m_BaseTriangles.push_back(pTri[i]);
-        pTri[i]->UpdateVertices();
+        m_Triangles.push_back(pTri[i]);
+        pTri[i]->updateVertices();
     }
+
+    //now we need to setup all the edge pointers
+
+    //tri 0
+    pTri[0]->m_pEdges[0] = pTri[1];
+    pTri[0]->m_pEdges[1] = pTri[9];
+    pTri[0]->m_pEdges[2] = pTri[7];
+
+    //tri 1
+    pTri[1]->m_pEdges[0] = pTri[0];
+    pTri[1]->m_pEdges[1] = pTri[4];
+    pTri[1]->m_pEdges[2] = pTri[11];
+
+    //tri 2
+    pTri[2]->m_pEdges[0] = pTri[3];
+    pTri[2]->m_pEdges[1] = pTri[5];
+    pTri[2]->m_pEdges[2] = pTri[8];
+
+    //tri 3
+    pTri[3]->m_pEdges[0] = pTri[2];
+    pTri[3]->m_pEdges[1] = pTri[6];
+    pTri[3]->m_pEdges[2] = pTri[11];
+
+    //tri 4
+    pTri[4]->m_pEdges[0] = pTri[5];
+    pTri[4]->m_pEdges[1] = pTri[1];
+    pTri[4]->m_pEdges[2] = pTri[9];
+
+    //tri 5
+    pTri[5]->m_pEdges[0] = pTri[4];
+    pTri[5]->m_pEdges[1] = pTri[2];
+    pTri[5]->m_pEdges[2] = pTri[11];
+
+    //tri 6
+    pTri[6]->m_pEdges[0] = pTri[7];
+    pTri[6]->m_pEdges[1] = pTri[3];
+    pTri[6]->m_pEdges[2] = pTri[8];
+
+    //tri 7
+    pTri[7]->m_pEdges[0] = pTri[6];
+    pTri[7]->m_pEdges[1] = pTri[0];
+    pTri[7]->m_pEdges[2] = pTri[10];
+
+    //tri 8
+    pTri[8]->m_pEdges[0] = pTri[9];
+    pTri[8]->m_pEdges[1] = pTri[6];
+    pTri[8]->m_pEdges[2] = pTri[2];
+
+    //tri 9
+    pTri[9]->m_pEdges[0] = pTri[8];
+    pTri[9]->m_pEdges[1] = pTri[0];
+    pTri[9]->m_pEdges[2] = pTri[4];
+
+    //tri 10
+    pTri[10]->m_pEdges[0] = pTri[11];
+    pTri[10]->m_pEdges[1] = pTri[7];
+    pTri[10]->m_pEdges[2] = pTri[1];
+
+    //tri 11
+    pTri[11]->m_pEdges[0] = pTri[10];
+    pTri[11]->m_pEdges[1] = pTri[3];
+    pTri[11]->m_pEdges[2] = pTri[5];
 }
 
 void RoamMesh::setVertexArray(ZVertexArray *newArray)
@@ -165,5 +242,13 @@ void RoamMesh::setVertexArray(ZVertexArray *newArray)
         {
             m_pVertexArray = newArray;
         }
+    }
+}
+
+void RoamMesh::update()
+{
+    if (m_Triangles.size() < 100)
+    {
+       (*m_Triangles.begin())->split();
     }
 }

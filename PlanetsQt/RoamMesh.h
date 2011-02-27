@@ -6,6 +6,7 @@
 #include <list>
 using namespace std;
 
+class ZDiamond;
 class ZTriangle;
 class ZVertexArray;
 
@@ -20,12 +21,14 @@ public:
 protected:
     ZVertexArray        *m_pVertexArray;
 
-    list<ZTriangle *>   m_BaseTriangles;
+    list<ZTriangle *>   m_Triangles;
+    list<ZDiamond *>    m_Diamonds;
 
     GLuint              indexBuffer;
     unsigned short      *m_pIndices; //index buffer
 
     void                setVertexArray(ZVertexArray *newArray);
+    void                update();
 
 private:
     void                initGL();
