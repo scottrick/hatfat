@@ -1,10 +1,7 @@
 #include "PlanetGraphicsScene.h"
 
-#include "hatfat/glee/GLee.h"
-
+//#include "hatfat/glee/GLee.h"
 #include <QDateTime>
-#include <QDialog>
-#include <QGLWidget>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
@@ -13,6 +10,7 @@
 #include <QPainter>
 #include <QPlastiqueStyle>
 #include <QVBoxLayout>
+#include <QDialog>
 
 #include "GraphicsView.h"
 #include "Noise.h"
@@ -20,6 +18,7 @@
 #include "RoamMesh.h"
 #include "ShaderManager.h"
 #include "SimpleMeshData.h"
+#include "ZCamera.h"""
 
 #include <ctime>
 #include <iostream>
@@ -135,7 +134,7 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    gluPerspective(60.0, (float)width() / (float)height(), 0.1, 100.0); //update this so we dont get crappy distortion
+    ZCamera::doTempPerspectiveCrap((float)width() / (float)height());
     glMatrixMode(GL_MODELVIEW);
 
     glLoadIdentity();
@@ -159,7 +158,7 @@ void PlanetGraphicsScene::drawNoise()
 {
     glPushMatrix();
 
-    gluLookAt(0.0, 0.0, g_fCameraDistance, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    ZCamera::doTempCameraCrap(g_fCameraDistance);
     glMultMatrixf(rotation.m);
 
     glLineWidth(1.0f);
@@ -207,7 +206,8 @@ void PlanetGraphicsScene::drawNoise()
 void PlanetGraphicsScene::drawScene()
 {
     glPushMatrix();
-    gluLookAt(0.0, 0.0, g_fCameraDistance, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+    ZCamera::doTempCameraCrap(g_fCameraDistance);
     glMultMatrixf(rotation.m);
 
 //    ShaderManager::get().GetActiveProgram()->Activate();
