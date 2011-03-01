@@ -1,6 +1,7 @@
 uniform vec3 lightDir;
 varying vec3 normal;
 
+//hatfat test commit
 void main() 
 {
 	float intensity;
