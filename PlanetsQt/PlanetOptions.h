@@ -11,11 +11,11 @@ class PlanetOptions : public Options
 public:
     PlanetOptions(Planet *pPlanet);
 
-    const char							*GetClassDebugName() const			{ return "PlanetOptions"; }
-    virtual void						Hide();
-    void								Print(int indent) const				{ }
-    void								SetPlanet(Planet *pPlanet);
-    virtual void						Show();
+    const char      *GetClassDebugName() const  { return "PlanetOptions"; }
+    virtual void    Hide();
+    void            Print(int indent) const     { }
+    void            SetPlanet(Planet *pPlanet);
+    virtual void    Show();
 
 protected:
     ~PlanetOptions();
@@ -23,7 +23,7 @@ protected:
 private:
     Planet *m_pPlanet;
 
-    void								Init();
+    void            Init();
 
 };
 

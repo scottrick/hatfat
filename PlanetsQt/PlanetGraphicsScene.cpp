@@ -1,6 +1,5 @@
 #include "PlanetGraphicsScene.h"
 
-//#include "hatfat/glee/GLee.h"
 #include <QDateTime>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
@@ -102,6 +101,14 @@ QWidget *PlanetGraphicsScene::createWidget(const QString &widgetTitle) const
 
 void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 {
+    //check for opengl errors
+    GLenum error = glGetError();
+    while (error != GL_NO_ERROR)
+    {
+        cout << "error: " << hex << error << dec << endl;
+        error = glGetError();
+    }
+
     ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
 
     if (painter->paintEngine()->type() != QPaintEngine::OpenGL && painter->paintEngine()->type() != QPaintEngine::OpenGL2)
@@ -152,6 +159,8 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     }
 
     ++m_fpsCounter;
+
+    glPopMatrix();
 }
 
 void PlanetGraphicsScene::drawNoise()

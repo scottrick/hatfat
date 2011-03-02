@@ -20,14 +20,14 @@ ShaderProgram *ShaderManager::GetActiveProgram()
 
 void ShaderManager::Init()
 {
-    ShaderProgram *pRedBumpProgram	= new ShaderProgram("..\\shaders\\red_bumpy.frag", "..\\shaders\\red_bumpy.vert", "RedBumpy");
-    //ShaderProgram *pTextureProgram	= new TestTextureProgram("..\\shaders\\texture.frag", "..\\shaders\\texture.vert", "Texture");
-    ShaderProgram *pToonProgram		= new ToonProgram("..\\shaders\\toon.frag", "..\\shaders\\default.vert", "Toon");
-    ShaderProgram *pWNormalsProgram	= new ShaderProgram("..\\shaders\\normals.frag", "..\\shaders\\normals.vert", "Normals");
-    ShaderProgram *pBrickProgram	= new BrickProgram("..\\shaders\\brick.frag", "..\\shaders\\brick.vert", "Brick");
-    ShaderProgram *pCubeProgram		= new CubeProgram("..\\shaders\\cube.frag", "..\\shaders\\cube.vert", "Cubes!");
-    ShaderProgram *pStripeProgram	= new StripeProgram("..\\shaders\\stripes.frag", "..\\shaders\\stripes.vert", "Stripes");
-    m_pPlanetProgram			= new PlanetProgramOne("..\\shaders\\planet1.frag", "..\\shaders\\planet1.vert", "Planet1");
+    ShaderProgram *pRedBumpProgram      = new ShaderProgram("../shaders/red_bumpy.frag", "../shaders/red_bumpy.vert", "RedBumpy");
+    //ShaderProgram *pTextureProgram    = new TestTextureProgram("../shaders/texture.frag", "../shaders/texture.vert", "Texture");
+    ShaderProgram *pToonProgram         = new ToonProgram("../shaders/toon.frag", "../shaders/default.vert", "Toon");
+    ShaderProgram *pWNormalsProgram     = new ShaderProgram("../shaders/normals.frag", "../shaders/normals.vert", "Normals");
+    ShaderProgram *pBrickProgram        = new BrickProgram("../shaders/brick.frag", "../shaders/brick.vert", "Brick");
+    ShaderProgram *pCubeProgram         = new CubeProgram("../shaders/cube.frag", "../shaders/cube.vert", "Cubes!");
+    ShaderProgram *pStripeProgram       = new StripeProgram("../shaders/stripes.frag", "../shaders/stripes.vert", "Stripes");
+    m_pPlanetProgram                    = new PlanetProgramOne("../shaders/planet1.frag", "../shaders/planet1.vert", "Planet1");
 
     m_Programs.push_back(m_pPlanetProgram);
     m_Programs.push_back(pToonProgram);

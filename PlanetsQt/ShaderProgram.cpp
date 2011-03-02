@@ -14,8 +14,8 @@ ShaderProgram::ShaderProgram(const char *pFragmentFile, const char *pVertexFile,
 
     this->m_pProgramName = pName;
 
-    FragmentShader	*pFragmentShader	= new FragmentShader(pFragmentFile);
-    VertexShader	*pVertexShader		= new VertexShader(pVertexFile);
+    FragmentShader *pFragmentShader = new FragmentShader(pFragmentFile);
+    VertexShader *pVertexShader	= new VertexShader(pVertexFile);
 
     SetFragmentShader(pFragmentShader);
     SetVertexShader(pVertexShader);

@@ -51,7 +51,7 @@ void ZVertexArray::initGL()
     int bufferSize = 0;
     glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &bufferSize);
 
-    cout << "bufferSize " << bufferSize << "    real " << (VERTEX_ARRAY_SIZE * sizeof(ZVertex)) << endl;
+//    cout << "bufferSize " << bufferSize << "    real " << (VERTEX_ARRAY_SIZE * sizeof(ZVertex)) << endl;
 
     const char *error = GLeeGetErrorString();
     if (*error != '\0')
@@ -85,8 +85,8 @@ void ZVertexArray::initRender()
             pVideoBuffer[i] = m_pBuffer[i];
             m_pUpdated[i] = 0;
 
-            cout << "updated (" << i << ") ";
-            m_pBuffer[i].dump();
+//            cout << "updated (" << i << ") ";
+//            m_pBuffer[i].dump();
         }
     }
 
