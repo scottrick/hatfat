@@ -83,11 +83,11 @@ void RoamMesh::Render()
 
     m_pVertexArray->initRender();
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glDrawElements(GL_TRIANGLES, index, GL_UNSIGNED_SHORT, m_pIndices);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     m_pVertexArray->finishRender();
 }

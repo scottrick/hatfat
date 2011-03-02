@@ -30,12 +30,12 @@ void ShaderManager::Init()
     m_pPlanetProgram                    = new PlanetProgramOne("../shaders/planet1.frag", "../shaders/planet1.vert", "Planet1");
 
     m_Programs.push_back(m_pPlanetProgram);
+    m_Programs.push_back(pRedBumpProgram);
     m_Programs.push_back(pToonProgram);
     m_Programs.push_back(pWNormalsProgram);
     m_Programs.push_back(pBrickProgram);
     m_Programs.push_back(pStripeProgram);
     m_Programs.push_back(pCubeProgram);
-    m_Programs.push_back(pRedBumpProgram);
     //m_Programs.push_back(pTextureProgram);
 
     m_ProgramIter = m_Programs.begin();

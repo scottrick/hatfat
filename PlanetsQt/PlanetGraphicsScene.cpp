@@ -220,7 +220,7 @@ void PlanetGraphicsScene::drawScene()
 
     glMultMatrixf(rotation.m);
 
-//    ShaderManager::get().GetActiveProgram()->Activate();
+    ShaderManager::get().GetActiveProgram()->Activate();
 
     pRoamMesh->Render();
 
@@ -257,7 +257,7 @@ void PlanetGraphicsScene::initialize()
     PLANET_RADIUS       = 1.0f;
     MAX_CAMERA_DISTANCE = PLANET_RADIUS * 20.0f;
     MIN_CAMERA_DISTANCE = PLANET_RADIUS * 1.1f;
-    g_fCameraDistance   = PLANET_RADIUS * 2.5f;
+    g_fCameraDistance   = PLANET_RADIUS * 4.2f;
 }
 
 void PlanetGraphicsScene::initializeNoise()
