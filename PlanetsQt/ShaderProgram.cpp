@@ -68,7 +68,7 @@ void ShaderProgram::CreateProgram()
 
 void ShaderProgram::DeleteProgram()
 {
-    if (m_dwProgram >= 0)
+    if (m_dwProgram > 0)
     {
         glDeleteProgram(m_dwProgram);
     }
@@ -98,10 +98,10 @@ void ShaderProgram::HideOptions() const
 
 void ShaderProgram::Init()
 {
-    m_dwProgram			= -1;
-    m_pFragmentShader	= 0;
-    m_pVertexShader		= 0;
-    m_pOptions			= 0;
+    m_dwProgram         = 0;
+    m_pFragmentShader   = 0;
+    m_pVertexShader     = 0;
+    m_pOptions          = 0;
 }	
 
 void ShaderProgram::Print(int indent) const

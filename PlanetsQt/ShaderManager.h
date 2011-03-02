@@ -36,9 +36,9 @@ private:
     ShaderManager(const ShaderManager &manager);        //not defined on purpose
     ShaderManager & operator=(const ShaderManager &);   //not defined on purpose
 
-    ~ShaderManager()                                    {};
+    ~ShaderManager()                                    { };
 
-    void													Init();
+    void                                                Init();
 };
 
 #endif

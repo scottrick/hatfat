@@ -20,8 +20,8 @@ ShaderProgram *ShaderManager::GetActiveProgram()
 
 void ShaderManager::Init()
 {
-    ShaderProgram *pRedBumpProgram      = new ShaderProgram("../shaders/red_bumpy.frag", "../shaders/red_bumpy.vert", "RedBumpy");
     //ShaderProgram *pTextureProgram    = new TestTextureProgram("../shaders/texture.frag", "../shaders/texture.vert", "Texture");
+    ShaderProgram *pRedBumpProgram      = new ShaderProgram("../shaders/red_bumpy.frag", "../shaders/red_bumpy.vert", "RedBumpy");
     ShaderProgram *pToonProgram         = new ToonProgram("../shaders/toon.frag", "../shaders/default.vert", "Toon");
     ShaderProgram *pWNormalsProgram     = new ShaderProgram("../shaders/normals.frag", "../shaders/normals.vert", "Normals");
     ShaderProgram *pBrickProgram        = new BrickProgram("../shaders/brick.frag", "../shaders/brick.vert", "Brick");
@@ -36,7 +36,7 @@ void ShaderManager::Init()
     m_Programs.push_back(pStripeProgram);
     m_Programs.push_back(pCubeProgram);
     m_Programs.push_back(pRedBumpProgram);
-    //m_Programs.push_back(pTtextureProgram);
+    //m_Programs.push_back(pTextureProgram);
 
     m_ProgramIter = m_Programs.begin();
     (*m_ProgramIter)->ShowOptions();
