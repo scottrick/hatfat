@@ -11,7 +11,7 @@ void main(void)
    L = normalize(lightPos - v);
    N = normalize(gl_NormalMatrix * gl_Normal);
 
-   pattern=fract(4.0*(gl_Vertex.y+gl_Vertex.x+gl_Vertex.z));
+   pattern=fract(gl_Vertex.y+gl_Vertex.x+gl_Vertex.z);
    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 }
              
