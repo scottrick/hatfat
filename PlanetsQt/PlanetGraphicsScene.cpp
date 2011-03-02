@@ -217,6 +217,7 @@ void PlanetGraphicsScene::drawScene()
     glPushMatrix();
 
     ZCamera::doTempCameraCrap(g_fCameraDistance);
+
     glMultMatrixf(rotation.m);
 
 //    ShaderManager::get().GetActiveProgram()->Activate();
@@ -386,11 +387,14 @@ void PlanetGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *pMouseEvent)
     if (pMouseEvent->buttons() & Qt::LeftButton) {
         const QPointF delta = pMouseEvent->scenePos() - pMouseEvent->lastScenePos();
 
-        Vector3 axis = Vector3(-delta.y(), -delta.x(), 0.0f);
-        Matrix rot = Matrix();
-        rot.SetRotation(axis, sqrt((float)abs(delta.x()) + (float)abs(delta.y())));
+        if (delta.y() || delta.x())
+        { //make sure it actually changed before we rotate
+            Vector3 axis = Vector3(-delta.y(), -delta.x(), 0.0f);
+            Matrix rot = Matrix();
+            rot.SetRotation(axis, sqrt((float)abs(delta.x()) + (float)abs(delta.y())));
 
-        rotation.RotateBy(rot);
+            rotation.RotateBy(rot);
+        }
 
         pMouseEvent->accept();
     }

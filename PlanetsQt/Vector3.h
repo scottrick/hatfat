@@ -11,6 +11,7 @@ public:
     float y;
     float z;
 
+    void Dump();
     void Normalize();
 
 };

@@ -1,6 +1,7 @@
 #include "Vector3.h"
 
 #include <cmath>
+#include <iostream>
 using namespace std;
 
 Vector3::Vector3()
@@ -13,6 +14,11 @@ Vector3::Vector3(float newX, float newY, float newZ)
     : x(newX), y(newY), z(newZ)
 {
 
+}
+
+void Vector3::Dump()
+{
+    cout << "Vector3  0x" << hex << this << dec << " (" << x << ", " << y << ", " << z << ")" << endl;
 }
 
 void Vector3::Normalize()
