@@ -54,6 +54,7 @@ private:
     //opengl settings
     bool            bMultisampling;
     bool            bDepth;
+    bool            bLight;
 
     bool            bPaused;
     float           fTime;

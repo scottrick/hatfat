@@ -135,6 +135,32 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glDisable(GL_DEPTH_TEST);
     }
 
+    if (bLight)
+    {
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+
+        GLfloat light_ambient[]     = { 1.0f, 0.0f, 0.0f, 1.0f };
+        GLfloat light_diffuse[]     = { 1.0f, 1.0f, 1.0f, 1.0f };
+        GLfloat light_specular[]    = { 0.0f, 0.0f, 1.0f, 1.0f };
+        GLfloat light_position[]    = { 2.0f, 2.0f, g_fCameraDistance };
+        GLfloat light_shininess[]   = { 70.0f };
+
+        glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+        glMaterialfv(GL_FRONT, GL_SPECULAR, light_specular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, light_shininess);
+
+    }
+    else
+    {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_LIGHT0);
+    }
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -234,6 +260,7 @@ void PlanetGraphicsScene::initialize()
     bFullscreen = false;
     bDepth = true;
     bMultisampling = true;
+    bLight = true;
 
     pTestNoise      = 0;
     pTestData       = 0;
@@ -346,6 +373,11 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
     case 'm':
     case 'M':
         bMultisampling = !bMultisampling;
+        break;
+
+    case 'l':
+    case 'L':
+        bLight = !bLight;
         break;
 
 //    case '3':
