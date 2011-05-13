@@ -17,7 +17,7 @@
 #include "RoamMesh.h"
 #include "ShaderManager.h"
 #include "SimpleMeshData.h"
-#include "ZCamera.h"""
+#include "ZCamera.h"
 
 #include <ctime>
 #include <iostream>
@@ -37,6 +37,9 @@ PlanetGraphicsScene::PlanetGraphicsScene(GraphicsView *pGraphicsView, QObject *p
     stats->layout()->addWidget(m_pSeedLabel);
 
     addWidget(stats);
+
+    lightPos[0] = 2.0f;
+    lightPos[1] = 2.0f;
 
     //now that we have added all the windows we want, go through them all and position them correctly
     QPointF pos(10, 10);
@@ -140,11 +143,11 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
 
-        GLfloat light_ambient[]     = { 1.0f, 0.0f, 0.0f, 1.0f };
+        GLfloat light_ambient[]     = { 0.1f, 0.1f, 0.1f, 1.0f };
         GLfloat light_diffuse[]     = { 1.0f, 1.0f, 1.0f, 1.0f };
-        GLfloat light_specular[]    = { 0.0f, 0.0f, 1.0f, 1.0f };
-        GLfloat light_position[]    = { 2.0f, 2.0f, g_fCameraDistance };
-        GLfloat light_shininess[]   = { 70.0f };
+        GLfloat light_specular[]    = { 1.0f, 1.0f, 1.0f, 1.0f };
+        GLfloat light_position[]    = { lightPos[0], lightPos[1], g_fCameraDistance };
+        GLfloat light_shininess[]   = { 7.0f };
 
         glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
@@ -257,6 +260,7 @@ void PlanetGraphicsScene::drawScene()
 
 void PlanetGraphicsScene::initialize()
 {
+    bControlPressed = false;
     bFullscreen = false;
     bDepth = true;
     bMultisampling = true;
@@ -295,7 +299,7 @@ void PlanetGraphicsScene::initializeNoise()
 
 void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
 {
-    //cout << "key=" << pKeyEvent->key() << endl;
+//    cout << "key=" << pKeyEvent->key() << endl;
 
     switch (pKeyEvent->key())
     {
@@ -401,8 +405,24 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
         pPlanet->Randomize();
         break;
 
+    case 16777249: //Control
+        bControlPressed = true;
+        break;
+
     default:
 
+        break;
+    }
+}
+
+void PlanetGraphicsScene::keyReleaseEvent(QKeyEvent *pKeyEvent)
+{
+//    cout << "key released " << pKeyEvent->key() << endl;
+
+    switch (pKeyEvent->key())
+    {
+    case 16777249: //Control
+        bControlPressed = false;
         break;
     }
 }
@@ -419,13 +439,21 @@ void PlanetGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *pMouseEvent)
     if (pMouseEvent->buttons() & Qt::LeftButton) {
         const QPointF delta = pMouseEvent->scenePos() - pMouseEvent->lastScenePos();
 
-        if (delta.y() || delta.x())
-        { //make sure it actually changed before we rotate
-            Vector3 axis = Vector3(-delta.y(), -delta.x(), 0.0f);
-            Matrix rot = Matrix();
-            rot.SetRotation(axis, sqrt((float)abs(delta.x()) + (float)abs(delta.y())));
+        if (bControlPressed)
+        { //control is pressed, so move the light source!
+            lightPos[0] += (delta.x() * 0.1f);
+            lightPos[1] += (-delta.y() * 0.1f);
+        }
+        else
+        { //just a regular mouse drag, so rotate
+            if (delta.y() || delta.x())
+            { //make sure it actually changed before we rotate
+                Vector3 axis = Vector3(-delta.y(), -delta.x(), 0.0f);
+                Matrix rot = Matrix();
+                rot.SetRotation(axis, sqrt((float)abs(delta.x()) + (float)abs(delta.y())));
 
-            rotation.RotateBy(rot);
+                rotation.RotateBy(rot);
+            }
         }
 
         pMouseEvent->accept();

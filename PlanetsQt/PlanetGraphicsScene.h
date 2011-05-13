@@ -39,6 +39,7 @@ protected:
     QWidget *createWidget(const QString &widgetTitle) const;
 
     void            keyPressEvent(QKeyEvent *pKeyEvent);
+    void            keyReleaseEvent(QKeyEvent *pKeyEvent);
 
     void            mouseMoveEvent(QGraphicsSceneMouseEvent *pMouseEvent);
 
@@ -48,6 +49,7 @@ private:
 
     GraphicsView    *m_pGraphicsView;
     bool            bFullscreen;
+    bool            bControlPressed;
 
     //opengl settings
     //opengl settings
@@ -64,6 +66,8 @@ private:
     SimpleMeshData  *pTestData;
     Planet          *pPlanet;
     RoamMesh        *pRoamMesh;
+
+    float           lightPos[2];
 
     SHAPE           currentShape;
     MODE            currentMode;

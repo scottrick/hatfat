@@ -22,6 +22,8 @@ void ShaderManager::Init()
 {
     //ShaderProgram *pTextureProgram    = new TestTextureProgram("../shaders/texture.frag", "../shaders/texture.vert", "Texture");
     ShaderProgram *pDirLightOne         = new ShaderProgram("../shaders/dir_light1.frag", "../shaders/dir_light1.vert", "DirLight1");
+    ShaderProgram *pPhong               = new ShaderProgram("../shaders/phong.frag", "../shaders/phong.vert", "Phong");
+//    ShaderProgram *pDiffuse             = new ShaderProgram("../shaders/diffuse.frag", "../shaders/diffuse.vert", "Diffuse");
     ShaderProgram *pRedBumpProgram      = new ShaderProgram("../shaders/red_bumpy.frag", "../shaders/red_bumpy.vert", "RedBumpy");
     ShaderProgram *pToonProgram         = new ToonProgram("../shaders/toon.frag", "../shaders/default.vert", "Toon");
     ShaderProgram *pWNormalsProgram     = new ShaderProgram("../shaders/normals.frag", "../shaders/normals.vert", "Normals");
@@ -31,6 +33,8 @@ void ShaderManager::Init()
     m_pPlanetProgram                    = new PlanetProgramOne("../shaders/planet1.frag", "../shaders/planet1.vert", "Planet1");
 
     m_Programs.push_back(m_pPlanetProgram);
+    m_Programs.push_back(pPhong);
+//    m_Programs.push_back(pDiffuse);
     m_Programs.push_back(pDirLightOne);
     m_Programs.push_back(pRedBumpProgram);
     m_Programs.push_back(pToonProgram);
