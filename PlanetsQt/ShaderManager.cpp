@@ -13,6 +13,23 @@ ShaderManager::ShaderManager()
     Init();
 }
 
+ShaderManager::~ShaderManager()
+{
+    ClearPrograms();
+}
+
+void ShaderManager::ClearPrograms()
+{
+    vector<ShaderProgram *>::iterator iter = m_Programs.begin();
+
+    while (iter != m_Programs.end())
+    {
+        (*iter)->Release();
+    }
+
+    m_Programs.clear();
+}
+
 ShaderProgram *ShaderManager::GetActiveProgram()
 {
     return (*m_ProgramIter);
@@ -31,8 +48,10 @@ void ShaderManager::Init()
     ShaderProgram *pCubeProgram         = new CubeProgram("../shaders/cube.frag", "../shaders/cube.vert", "Cubes!");
     ShaderProgram *pStripeProgram       = new StripeProgram("../shaders/stripes.frag", "../shaders/stripes.vert", "Stripes");
     m_pPlanetProgram                    = new PlanetProgramOne("../shaders/planet1.frag", "../shaders/planet1.vert", "Planet1");
+    m_pPlanetTest                       = new PlanetProgramOne("../shaders/planet2.frag", "../shaders/planet2.vert", "PlanetTest");
 
     m_Programs.push_back(m_pPlanetProgram);
+    m_Programs.push_back(m_pPlanetTest);
     m_Programs.push_back(pPhong);
 //    m_Programs.push_back(pDiffuse);
     m_Programs.push_back(pDirLightOne);

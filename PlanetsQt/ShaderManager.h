@@ -19,6 +19,7 @@ public:
 
     ShaderProgram       *GetActiveProgram();
     PlanetProgramOne    *GetPlanetProgram()             { return m_pPlanetProgram; }
+    PlanetProgramOne    *GetPlanetTest()                { return m_pPlanetTest; }
 
     void NextProgram();
     void PrevProgram();
@@ -31,13 +32,15 @@ private:
     vector<ShaderProgram* >::iterator                   m_ProgramIter;
 
     PlanetProgramOne                                    *m_pPlanetProgram;
+    PlanetProgramOne                                    *m_pPlanetTest;
 
     ShaderManager();
     ShaderManager(const ShaderManager &manager);        //not defined on purpose
     ShaderManager & operator=(const ShaderManager &);   //not defined on purpose
 
-    ~ShaderManager()                                    { };
+    ~ShaderManager();
 
+    void                                                ClearPrograms();
     void                                                Init();
 };
 

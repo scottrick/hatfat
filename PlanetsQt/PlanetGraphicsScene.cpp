@@ -113,6 +113,7 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     }
 
     ShaderManager::get().GetPlanetProgram()->SetPlanet(pPlanet);
+    ShaderManager::get().GetPlanetTest()->SetPlanet(pPlanet);
 
     if (painter->paintEngine()->type() != QPaintEngine::OpenGL && painter->paintEngine()->type() != QPaintEngine::OpenGL2)
     {
