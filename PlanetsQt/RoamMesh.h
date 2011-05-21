@@ -16,7 +16,8 @@ public:
     RoamMesh();
     ~RoamMesh();
 
-    void Render();
+    void                render();
+    void                toggleWireframe();
 
 protected:
     ZVertexArray        *m_pVertexArray;
@@ -36,6 +37,7 @@ private:
     void                setupBaseTriangles();
 
     bool                bGLReady;
+    bool                bWireframe;
 };
 
 #endif // ROAMMESH_H

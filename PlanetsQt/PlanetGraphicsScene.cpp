@@ -157,7 +157,6 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 
         glMaterialfv(GL_FRONT, GL_SPECULAR, light_specular);
         glMaterialfv(GL_FRONT, GL_SHININESS, light_shininess);
-
     }
     else
     {
@@ -252,7 +251,7 @@ void PlanetGraphicsScene::drawScene()
 
     ShaderManager::get().GetActiveProgram()->Activate();
 
-    pRoamMesh->Render();
+    pRoamMesh->render();
 
     glUseProgram(0);
 
@@ -375,14 +374,19 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
         bDepth = !bDepth;
         break;
 
+    case 'l':
+    case 'L':
+        bLight = !bLight;
+        break;
+
     case 'm':
     case 'M':
         bMultisampling = !bMultisampling;
         break;
 
-    case 'l':
-    case 'L':
-        bLight = !bLight;
+    case 'w':
+    case 'W':
+        pRoamMesh->toggleWireframe();
         break;
 
 //    case '3':

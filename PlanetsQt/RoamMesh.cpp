@@ -13,6 +13,7 @@ using namespace std;
 RoamMesh::RoamMesh()
 {
     bGLReady = false;
+    bWireframe = false;
 
     m_pVertexArray = new ZVertexArray();
 
@@ -52,7 +53,7 @@ void RoamMesh::initGL()
     bGLReady = true;
 }
 
-void RoamMesh::Render()
+void RoamMesh::render()
 {
     if (!bGLReady)
     {
@@ -69,25 +70,25 @@ void RoamMesh::Render()
         iter++;
     }
 
-//    list<ZTriangle *>::iterator iter = m_Triangles.begin();
-//    for (int i = 0; i < testIndex; ++i)
-//    {
-//        iter++;
-//    }
-
-//    ZTriangle *pTestTriangle = *iter;
-//    pTestTriangle->prepareDraw(m_pIndices, index);
-//    pTestTriangle->m_pEdges[0]->prepareDraw(m_pIndices, index);
-//    pTestTriangle->m_pEdges[1]->prepareDraw(m_pIndices, index);
-//    pTestTriangle->m_pEdges[2]->prepareDraw(m_pIndices, index);
-
     m_pVertexArray->initRender();
 
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    if (bWireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glLineWidth(4.0f);
+    }
+    else
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 
     glDrawElements(GL_TRIANGLES, index, GL_UNSIGNED_SHORT, m_pIndices);
 
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    if (bWireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glLineWidth(1.0f);
+    }
 
     m_pVertexArray->finishRender();
 }
@@ -243,6 +244,11 @@ void RoamMesh::setVertexArray(ZVertexArray *newArray)
             m_pVertexArray = newArray;
         }
     }
+}
+
+void RoamMesh::toggleWireframe()
+{
+    bWireframe = !bWireframe;
 }
 
 void RoamMesh::update()

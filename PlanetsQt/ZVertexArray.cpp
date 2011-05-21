@@ -84,9 +84,6 @@ void ZVertexArray::initRender()
         {
             pVideoBuffer[i] = m_pBuffer[i];
             m_pUpdated[i] = 0;
-
-//            cout << "updated (" << i << ") ";
-//            m_pBuffer[i].dump();
         }
     }
 
