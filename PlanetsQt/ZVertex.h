@@ -14,6 +14,11 @@ public:
     void setNormal(const float &x, const float &y, const float &z);
     void dump();
 
+    VECTOR3 getPosition() { return m_vPos; }
+    VECTOR3 getNormal() { return m_vNrm; }
+
+    void makeMidpoint(ZVertex *pStart, ZVertex *pEnd);
+
 private:
     VECTOR3 m_vPos; //position
     VECTOR3 m_vNrm; //normal

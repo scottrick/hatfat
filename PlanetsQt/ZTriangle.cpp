@@ -1,6 +1,10 @@
 #include "ZTriangle.h"
 
+#include "ZDiamond.h"
 #include "ZVertexArray.h"
+
+#include <iostream>
+using namespace std;
 
 ZTriangle::ZTriangle(unsigned short v1, unsigned short v2, unsigned short v3, ZVertexArray *array)
 {
@@ -16,6 +20,17 @@ ZTriangle::ZTriangle(unsigned short v1, unsigned short v2, unsigned short v3, ZV
     m_pEdges[2] = 0;
 }
 
+void ZTriangle::dump()
+{
+    cout << "ZTriangle 0x" << hex << this << dec << endl;
+    cout << "  (0) ";
+    m_pVertexArray->m_pBuffer[m_Vertex[0]].dump();
+    cout << "  (1) ";
+    m_pVertexArray->m_pBuffer[m_Vertex[1]].dump();
+    cout << "  (2) ";
+    m_pVertexArray->m_pBuffer[m_Vertex[2]].dump();
+}
+
 void ZTriangle::prepareDraw(unsigned short *array, unsigned short &index)
 {
     array[index++] = m_Vertex[0];
@@ -25,7 +40,13 @@ void ZTriangle::prepareDraw(unsigned short *array, unsigned short &index)
 
 void ZTriangle::split()
 {
+    cout << "splitting ";
+    this->dump();;
 
+    if (m_pDiamond)
+    {
+        m_pDiamond->split();
+    }
 }
 
 void ZTriangle::updateVertices()

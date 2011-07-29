@@ -13,6 +13,7 @@ public:
 
     unsigned short m_Vertex[3]; //indices into the vertex array, for the vertices
 
+    void dump();
     void prepareDraw(unsigned short *array, unsigned short &index);
     void split();
     void updateVertices();

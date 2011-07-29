@@ -16,6 +16,10 @@ public:
     RoamMesh();
     ~RoamMesh();
 
+    void                addDiamond(ZDiamond *pDiamond);
+    void                addTriangle(ZTriangle *pTriangle);
+    void                removeTriangle(ZTriangle *pTriangle);
+
     void                render();
     void                toggleWireframe();
 
