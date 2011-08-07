@@ -60,6 +60,7 @@ void SimpleMeshData::dump() const
 void SimpleMeshData::generateMeshForTime(float fTime)
 {
     float fValue = 0.0f;
+    float fBlueCutoff = -0.15f;
 
     //create some test noise
     for (int y = 0; y < m_NumberInRowY; ++y)
@@ -73,7 +74,7 @@ void SimpleMeshData::generateMeshForTime(float fTime)
             {
                 m_pColors[(y * m_NumberInRowY + x)] = 0xffffffff;
             }
-            else if (fValue > -0.3f)
+            else if (fValue > fBlueCutoff)
             {
                 m_pColors[(y * m_NumberInRowY + x)] = 0xff003399;
             }
@@ -82,13 +83,13 @@ void SimpleMeshData::generateMeshForTime(float fTime)
                 m_pColors[(y * m_NumberInRowY + x)] = 0xffff0000;
             }
 
-            if (fValue < -0.15f)
+            if (fValue < fBlueCutoff)
             {
-                m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = -0.15f;
+                m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = fBlueCutoff;
             }
             else
             {
-                fValue *= 0.5f;
+                fValue = fBlueCutoff + ((fValue - fBlueCutoff) * 0.70f);
                 m_pVertices[(y * m_NumberInRowY + x) * 3 + 2] = fValue;
             }
         }

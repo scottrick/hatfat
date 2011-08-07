@@ -21,7 +21,10 @@ public:
     void                removeDiamond(ZDiamond *pDiamond);
     void                removeTriangle(ZTriangle *pTriangle);
 
+    void                makeNewDiamondForTriangles(ZTriangle *pTriOne, ZTriangle *pTriTwo);
+
     void                render();
+    void                splitOne();
     void                toggleWireframe();
 
 protected:

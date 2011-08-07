@@ -76,19 +76,32 @@ void ZDiamond::split()
     pVertexArray->updateVertex(m);
 
     //make the four children!
-    ZTriangle *c1 = new ZTriangle(m_pParent[0]->m_Vertex[2], m, m_pParent[0]->m_Vertex[1], pVertexArray);
-    ZTriangle *c2 = new ZTriangle(m_pParent[0]->m_Vertex[1], m, m_pParent[0]->m_Vertex[0], pVertexArray);
-    ZTriangle *c3 = new ZTriangle(m_pParent[0]->m_Vertex[0], m, m_pParent[1]->m_Vertex[2], pVertexArray);
-    ZTriangle *c4 = new ZTriangle(m_pParent[1]->m_Vertex[2], m, m_pParent[0]->m_Vertex[2], pVertexArray);
+//    ZTriangle *c1 = new ZTriangle(m_pParent[0]->m_Vertex[2], m, m_pParent[0]->m_Vertex[1], pVertexArray);
+    ZTriangle *c1 = new ZTriangle(m_pParent[0]->m_Vertex[1], m_pParent[0]->m_Vertex[2], m, pVertexArray);
+
+//    ZTriangle *c2 = new ZTriangle(m_pParent[0]->m_Vertex[1], m, m_pParent[0]->m_Vertex[0], pVertexArray);
+    ZTriangle *c2 = new ZTriangle(m_pParent[0]->m_Vertex[0], m_pParent[0]->m_Vertex[1], m, pVertexArray);
+
+    ZTriangle *c3 = new ZTriangle(m_pParent[1]->m_Vertex[0], m, m_pParent[1]->m_Vertex[2], pVertexArray);
+    ZTriangle *c4 = new ZTriangle(m_pParent[1]->m_Vertex[2], m, m_pParent[1]->m_Vertex[1], pVertexArray);
+
+    c1->m_SplitLevel = m_pParent[0]->m_SplitLevel + 1;
+    c2->m_SplitLevel = m_pParent[0]->m_SplitLevel + 1;
+    c3->m_SplitLevel = m_pParent[1]->m_SplitLevel + 1;
+    c4->m_SplitLevel = m_pParent[1]->m_SplitLevel + 1;
+    c1->m_DiamondEdgeIndex = 0;
+    c2->m_DiamondEdgeIndex = 0;
+    c3->m_DiamondEdgeIndex = 2;
+    c4->m_DiamondEdgeIndex = 2;
 
     //setup the edges on the new triangles.  See RoamMesh.cpp for more information about which edge is which.
-    c1->m_pEdges[0] = c4;
-    c1->m_pEdges[1] = c2;
-    c1->m_pEdges[2] = m_pParent[0]->m_pEdges[1];
+    c1->m_pEdges[0] = m_pParent[0]->m_pEdges[1];
+    c1->m_pEdges[1] = c4;
+    c1->m_pEdges[2] = c2;
 
-    c2->m_pEdges[0] = c1;
-    c2->m_pEdges[1] = c3;
-    c2->m_pEdges[2] = m_pParent[0]->m_pEdges[0];
+    c2->m_pEdges[0] = m_pParent[0]->m_pEdges[0];
+    c2->m_pEdges[1] = c1;
+    c2->m_pEdges[2] = c3;
 
     c3->m_pEdges[0] = c2;
     c3->m_pEdges[1] = c4;
@@ -98,15 +111,30 @@ void ZDiamond::split()
     c4->m_pEdges[1] = c1;
     c4->m_pEdges[2] = m_pParent[1]->m_pEdges[1];
 
-//    c1->m_pDiamond = this;
-//    c2->m_pDiamond = this;
-//    c3->m_pDiamond = this;
-//    c4->m_pDiamond = this;
-
     c1->m_pParent = m_pParent[0];
     c2->m_pParent = m_pParent[0];
     c3->m_pParent = m_pParent[1];
     c4->m_pParent = m_pParent[1];
+
+    //update the parent's edge triangles edges... so they point to the new children triangles.  yes that was a mouth full
+    m_pParent[0]->m_pEdges[0]->updateEdge(m_pParent[0], c2);
+    m_pParent[0]->m_pEdges[1]->updateEdge(m_pParent[0], c1);
+    m_pParent[1]->m_pEdges[1]->updateEdge(m_pParent[1], c4);
+    m_pParent[1]->m_pEdges[2]->updateEdge(m_pParent[1], c3);
+
+    //check the new triangles and see if they should be part of a diamond
+    if (c1->isDiamondReady()) {
+        this->m_pMesh->makeNewDiamondForTriangles(c1->m_pEdges[c1->m_DiamondEdgeIndex], c1);
+    }
+    if (c2->isDiamondReady()) {
+        this->m_pMesh->makeNewDiamondForTriangles(c2->m_pEdges[c2->m_DiamondEdgeIndex], c2);
+    }
+    if (c3->isDiamondReady()) {
+        this->m_pMesh->makeNewDiamondForTriangles(c3, c3->m_pEdges[c3->m_DiamondEdgeIndex]);
+    }
+    if (c4->isDiamondReady()) {
+        this->m_pMesh->makeNewDiamondForTriangles(c4, c4->m_pEdges[c4->m_DiamondEdgeIndex]);
+    }
 
     m_pMesh->addTriangle(c1);
     m_pMesh->addTriangle(c2);

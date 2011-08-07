@@ -139,6 +139,8 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glDisable(GL_DEPTH_TEST);
     }
 
+//    glEnable(GL_CULL_FACE);
+
     if (bLight)
     {
         glEnable(GL_LIGHTING);
@@ -389,21 +391,11 @@ void PlanetGraphicsScene::keyPressEvent(QKeyEvent *pKeyEvent)
         pRoamMesh->toggleWireframe();
         break;
 
-//    case '3':
-//        pRoamMesh->testIndex++;
-//        if (pRoamMesh->testIndex > 11)
-//        {
-//            pRoamMesh->testIndex = 11;
-//        }
-//        break;
+    case 's':
+    case 'S':
+        pRoamMesh->splitOne();
+        break;
 
-//        case '4':
-//        pRoamMesh->testIndex--;
-//        if (pRoamMesh->testIndex < 0)
-//        {
-//            pRoamMesh->testIndex = 0;
-//        }
-//        break;
 
     case 32: //spacebar
         createRandomNoise();

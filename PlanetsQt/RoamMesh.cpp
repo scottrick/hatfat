@@ -54,6 +54,17 @@ void RoamMesh::removeTriangle(ZTriangle *pTriangle)
     cout << "removed ZTriangle " << hex << pTriangle << dec << ".  Current triangle count is " << m_Triangles.size() << "." << endl;
 }
 
+void RoamMesh::makeNewDiamondForTriangles(ZTriangle *pTriOne, ZTriangle *pTriTwo)
+{
+    ZDiamond* pNewDiamond = new ZDiamond();
+    pNewDiamond->m_pParent[0] = pTriOne;
+    pNewDiamond->m_pParent[1] = pTriTwo;
+    pNewDiamond->m_pMesh = this;
+    pTriOne->m_pDiamond = pNewDiamond;
+    pTriTwo->m_pDiamond = pNewDiamond;
+    this->addDiamond(pNewDiamond);
+}
+
 void RoamMesh::initGL()
 {
     char *version = (char *)glGetString(GL_VERSION);
@@ -165,69 +176,32 @@ void RoamMesh::setupBaseTriangles()
     //front
     pTri[0] = new ZTriangle(ind[1], ind[0], ind[2], m_pVertexArray);
     pTri[1] = new ZTriangle(ind[1], ind[2], ind[3], m_pVertexArray);
-    ZDiamond *pDiamond = new ZDiamond();
-    pDiamond->m_pParent[0] = pTri[0];
-    pDiamond->m_pParent[1] = pTri[1];
-    pDiamond->m_pMesh = this;
-    pTri[0]->m_pDiamond = pDiamond;
-    pTri[1]->m_pDiamond = pDiamond;
-    m_Diamonds.push_back(pDiamond);
+    makeNewDiamondForTriangles(pTri[0], pTri[1]);
 
     //back
     pTri[2] = new ZTriangle(ind[4], ind[5], ind[7], m_pVertexArray);
     pTri[3] = new ZTriangle(ind[4], ind[7], ind[6], m_pVertexArray);
-    pDiamond = new ZDiamond();
-    pDiamond->m_pParent[0] = pTri[2];
-    pDiamond->m_pParent[1] = pTri[3];
-    pDiamond->m_pMesh = this;
-    pTri[2]->m_pDiamond = pDiamond;
-    pTri[3]->m_pDiamond = pDiamond;
-    m_Diamonds.push_back(pDiamond);
+    makeNewDiamondForTriangles(pTri[2], pTri[3]);
 
     //right
     pTri[4] = new ZTriangle(ind[5], ind[1], ind[3], m_pVertexArray);
     pTri[5] = new ZTriangle(ind[5], ind[3], ind[7], m_pVertexArray);
-    pDiamond = new ZDiamond();
-    pDiamond->m_pParent[0] = pTri[4];
-    pDiamond->m_pParent[1] = pTri[5];
-    pDiamond->m_pMesh = this;
-    pTri[4]->m_pDiamond = pDiamond;
-    pTri[5]->m_pDiamond = pDiamond;
-    m_Diamonds.push_back(pDiamond);
+    makeNewDiamondForTriangles(pTri[4], pTri[5]);
 
     //left
     pTri[6] = new ZTriangle(ind[0], ind[4], ind[6], m_pVertexArray);
     pTri[7] = new ZTriangle(ind[0], ind[6], ind[2], m_pVertexArray);
-    pDiamond = new ZDiamond();
-    pDiamond->m_pParent[0] = pTri[6];
-    pDiamond->m_pParent[1] = pTri[7];
-    pDiamond->m_pMesh = this;
-    pTri[6]->m_pDiamond = pDiamond;
-    pTri[7]->m_pDiamond = pDiamond;
-    m_Diamonds.push_back(pDiamond);
+    makeNewDiamondForTriangles(pTri[6], pTri[7]);
 
     //top
     pTri[8] = new ZTriangle(ind[5], ind[4], ind[0], m_pVertexArray);
     pTri[9] = new ZTriangle(ind[5], ind[0], ind[1], m_pVertexArray);
-    pDiamond = new ZDiamond();
-    pDiamond->m_pParent[0] = pTri[8];
-    pDiamond->m_pParent[1] = pTri[9];
-    pDiamond->m_pMesh = this;
-    pTri[8]->m_pDiamond = pDiamond;
-    pTri[9]->m_pDiamond = pDiamond;
-    m_Diamonds.push_back(pDiamond);
+    makeNewDiamondForTriangles(pTri[8], pTri[9]);
 
     //bottom
     pTri[10] = new ZTriangle(ind[3], ind[2], ind[6], m_pVertexArray);
     pTri[11] = new ZTriangle(ind[3], ind[6], ind[7], m_pVertexArray);
-    pDiamond = new ZDiamond();
-    pDiamond->m_pParent[0] = pTri[10];
-    pDiamond->m_pParent[1] = pTri[11];
-    pDiamond->m_pMesh = this;
-    pTri[10]->m_pDiamond = pDiamond;
-    pTri[11]->m_pDiamond = pDiamond;
-    m_Diamonds.push_back(pDiamond);
-
+    makeNewDiamondForTriangles(pTri[10], pTri[11]);
 
     for (int i = 0; i < 12; ++i)
     {
@@ -345,6 +319,11 @@ void RoamMesh::setVertexArray(ZVertexArray *newArray)
     }
 }
 
+void RoamMesh::splitOne()
+{
+    (*m_Triangles.begin())->split();
+}
+
 void RoamMesh::toggleWireframe()
 {
     bWireframe = !bWireframe;
@@ -352,8 +331,8 @@ void RoamMesh::toggleWireframe()
 
 void RoamMesh::update()
 {
-    if (m_Triangles.size() <= 22)
-    {
-        (*m_Triangles.begin())->split();
-    }
+//    if (m_Triangles.size() <= 49)
+//    {
+//        splitOne();
+//    }
 }

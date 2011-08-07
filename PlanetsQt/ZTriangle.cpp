@@ -32,6 +32,19 @@ void ZTriangle::dump()
     m_pVertexArray->m_pBuffer[m_Vertex[2]].dump();
 }
 
+bool ZTriangle::isDiamondReady()
+{
+//    cout << "isDiamondReady " << this->m_pEdges[this->m_DiamondEdgeIndex]->m_SplitLevel << ", " << this->m_SplitLevel << endl;
+    if (this->m_pEdges[this->m_DiamondEdgeIndex]->m_SplitLevel == this->m_SplitLevel)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void ZTriangle::prepareDraw(unsigned short *array, unsigned short &index)
 {
     array[index++] = m_Vertex[0];
@@ -45,6 +58,29 @@ void ZTriangle::split()
     {
         cout << "splitting " << hex << this << dec << endl;
         m_pDiamond->split();
+    }
+    else
+    {
+        cout << "unable to split, no diamond!" << endl;
+    }
+}
+
+void ZTriangle::updateEdge(ZTriangle *pOldEdge, ZTriangle *pNewEdge)
+{
+    //one of the edges MUST be a match, or we screwed something up
+    assert(m_pEdges[0] == pOldEdge || m_pEdges[1] == pOldEdge || m_pEdges[2] == pOldEdge);
+
+    if (m_pEdges[0] == pOldEdge)
+    {
+        m_pEdges[0] = pNewEdge;
+    }
+    else if (m_pEdges[1] == pOldEdge)
+    {
+        m_pEdges[1] = pNewEdge;
+    }
+    else if (m_pEdges[2] == pOldEdge)
+    {
+        m_pEdges[2] = pNewEdge;
     }
 }
 

@@ -14,8 +14,10 @@ public:
     unsigned short m_Vertex[3]; //indices into the vertex array, for the vertices
 
     void dump();
+    bool isDiamondReady(); //returns true when its 'diamond partner' exists and is at the same split level
     void prepareDraw(unsigned short *array, unsigned short &index);
     void split();
+    void updateEdge(ZTriangle *pOldEdge, ZTriangle *pNewEdge);
     void updateVertices();
 
     ZTriangle *m_pParent; //parent triangle
@@ -26,7 +28,7 @@ public:
     //split level is used to quickly determine if two triangles are on the same level of the 'tree,' and have been split the same number of times.
     int m_SplitLevel;
     //Diamond Edge Index is used to tell which edge triangle this triangle will eventually be in a diamond with
-    char m_DiamondEdgeIndex;
+    short m_DiamondEdgeIndex;
 
 //    CROAMTriangle *m_pEdge[3]; // Pointers to edge neighbors
 //    CROAMTriangle *m_pParent; // Pointer to the parent triangle
