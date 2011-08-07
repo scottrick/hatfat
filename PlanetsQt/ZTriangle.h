@@ -23,6 +23,10 @@ public:
 
     ZTriangle *m_pEdges[3]; //other triangles adjacent to this one
 
+    //split level is used to quickly determine if two triangles are on the same level of the 'tree,' and have been split the same number of times.
+    int m_SplitLevel;
+    //Diamond Edge Index is used to tell which edge triangle this triangle will eventually be in a diamond with
+    char m_DiamondEdgeIndex;
 
 //    CROAMTriangle *m_pEdge[3]; // Pointers to edge neighbors
 //    CROAMTriangle *m_pParent; // Pointer to the parent triangle

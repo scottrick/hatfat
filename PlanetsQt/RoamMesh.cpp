@@ -33,35 +33,25 @@ RoamMesh::~RoamMesh()
 void RoamMesh::addDiamond(ZDiamond *pDiamond)
 {
     m_Diamonds.push_back(pDiamond);
+    cout << "added ZDiamond " << hex << pDiamond << dec << ".  Current diamond count is " << m_Diamonds.size() << "." << endl;
 }
 
 void RoamMesh::addTriangle(ZTriangle *pTriangle)
 {
-    cout << "added Triangle 0x" << hex << pTriangle << dec << endl;
     m_Triangles.push_back(pTriangle);
+    cout << "added ZTriangle " << hex << pTriangle << dec << ".  Current triangle count is " << m_Triangles.size() << "." << endl;
 }
 
 void RoamMesh::removeDiamond(ZDiamond *pDiamond)
 {
-    cout << "removing Diamond 0x" << hex << pDiamond << dec << endl;
     m_Diamonds.remove(pDiamond);
+    cout << "removed ZDiamond " << hex << pDiamond << dec << ".  Current diamond count is " << m_Diamonds.size() << "." << endl;
 }
 
 void RoamMesh::removeTriangle(ZTriangle *pTriangle)
 {
     m_Triangles.remove(pTriangle);
-    cout << "removed 0x" << hex << pTriangle << dec << ".  Current triangle count is " << m_Triangles.size() << "." << endl;
-
-//    list<ZTriangle *>::iterator iter = m_Triangles.begin();
-//    while (iter != m_Triangles.end())
-//    {
-//        ZTriangle *triangle = *iter;
-
-//        cout << "  ";
-//        triangle->dump();
-
-//        iter++;
-//    }
+    cout << "removed ZTriangle " << hex << pTriangle << dec << ".  Current triangle count is " << m_Triangles.size() << "." << endl;
 }
 
 void RoamMesh::initGL()
@@ -238,8 +228,10 @@ void RoamMesh::setupBaseTriangles()
     pTri[11]->m_pDiamond = pDiamond;
     m_Diamonds.push_back(pDiamond);
 
+
     for (int i = 0; i < 12; ++i)
     {
+        pTri[i]->m_SplitLevel = 0; //set starting split level
         m_Triangles.push_back(pTri[i]);
         pTri[i]->updateVertices();
     }
@@ -261,65 +253,79 @@ void RoamMesh::setupBaseTriangles()
      */
 
     //now we need to setup all the edge pointers
+    //also set the m_DiamondEdgeIndex, so we know which edge triangle will eventually be the diamond neighbor
+
     //tri 0
     pTri[0]->m_pEdges[0] = pTri[9];
     pTri[0]->m_pEdges[1] = pTri[7];
     pTri[0]->m_pEdges[2] = pTri[1];
+    pTri[0]->m_DiamondEdgeIndex = 2;
 
     //tri 1
     pTri[1]->m_pEdges[0] = pTri[0];
     pTri[1]->m_pEdges[1] = pTri[10];
     pTri[1]->m_pEdges[2] = pTri[4];
+    pTri[1]->m_DiamondEdgeIndex = 0;
 
     //tri 2
     pTri[2]->m_pEdges[0] = pTri[8];
     pTri[2]->m_pEdges[1] = pTri[5];
     pTri[2]->m_pEdges[2] = pTri[3];
+    pTri[2]->m_DiamondEdgeIndex = 2;
 
     //tri 3
     pTri[3]->m_pEdges[0] = pTri[2];
     pTri[3]->m_pEdges[1] = pTri[11];
     pTri[3]->m_pEdges[2] = pTri[6];
+    pTri[3]->m_DiamondEdgeIndex = 0;
 
     //tri 4
     pTri[4]->m_pEdges[0] = pTri[9];
     pTri[4]->m_pEdges[1] = pTri[1];
     pTri[4]->m_pEdges[2] = pTri[5];
+    pTri[4]->m_DiamondEdgeIndex = 2;
 
     //tri 5
     pTri[5]->m_pEdges[0] = pTri[4];
     pTri[5]->m_pEdges[1] = pTri[11];
     pTri[5]->m_pEdges[2] = pTri[2];
+    pTri[5]->m_DiamondEdgeIndex = 0;
 
     //tri 6
     pTri[6]->m_pEdges[0] = pTri[8];
     pTri[6]->m_pEdges[1] = pTri[3];
     pTri[6]->m_pEdges[2] = pTri[7];
+    pTri[6]->m_DiamondEdgeIndex = 2;
 
     //tri 7
     pTri[7]->m_pEdges[0] = pTri[6];
     pTri[7]->m_pEdges[1] = pTri[10];
     pTri[7]->m_pEdges[2] = pTri[0];
+    pTri[7]->m_DiamondEdgeIndex = 0;
 
     //tri 8
     pTri[8]->m_pEdges[0] = pTri[2];
     pTri[8]->m_pEdges[1] = pTri[6];
     pTri[8]->m_pEdges[2] = pTri[9];
+    pTri[8]->m_DiamondEdgeIndex = 2;
 
     //tri 9
     pTri[9]->m_pEdges[0] = pTri[8];
     pTri[9]->m_pEdges[1] = pTri[0];
     pTri[9]->m_pEdges[2] = pTri[4];
+    pTri[9]->m_DiamondEdgeIndex = 0;
 
     //tri 10
     pTri[10]->m_pEdges[0] = pTri[1];
     pTri[10]->m_pEdges[1] = pTri[7];
     pTri[10]->m_pEdges[2] = pTri[11];
+    pTri[10]->m_DiamondEdgeIndex = 2;
 
     //tri 11
     pTri[11]->m_pEdges[0] = pTri[10];
     pTri[11]->m_pEdges[1] = pTri[3];
     pTri[11]->m_pEdges[2] = pTri[5];
+    pTri[11]->m_DiamondEdgeIndex = 0;
 }
 
 void RoamMesh::setVertexArray(ZVertexArray *newArray)

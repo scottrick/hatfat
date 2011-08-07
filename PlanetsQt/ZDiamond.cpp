@@ -5,6 +5,7 @@
 #include "ZVertex.h"
 #include "ZVertexArray.h"
 
+#include <cassert>
 #include <iostream>
 using namespace std;
 
@@ -20,6 +21,11 @@ ZDiamond::ZDiamond()
 
 void ZDiamond::split()
 {
+    assert(m_pParent[0]->m_DiamondEdgeIndex >= 0 && m_pParent[0]->m_DiamondEdgeIndex < 3);
+    assert(m_pParent[0]->m_SplitLevel >= 0);
+    assert(m_pParent[1]->m_DiamondEdgeIndex >= 0 && m_pParent[1]->m_DiamondEdgeIndex < 3);
+    assert(m_pParent[1]->m_SplitLevel >= 0);
+
     int v1 = -1;
     int v2 = -1;
 
@@ -74,6 +80,23 @@ void ZDiamond::split()
     ZTriangle *c2 = new ZTriangle(m_pParent[0]->m_Vertex[1], m, m_pParent[0]->m_Vertex[0], pVertexArray);
     ZTriangle *c3 = new ZTriangle(m_pParent[0]->m_Vertex[0], m, m_pParent[1]->m_Vertex[2], pVertexArray);
     ZTriangle *c4 = new ZTriangle(m_pParent[1]->m_Vertex[2], m, m_pParent[0]->m_Vertex[2], pVertexArray);
+
+    //setup the edges on the new triangles.  See RoamMesh.cpp for more information about which edge is which.
+    c1->m_pEdges[0] = c4;
+    c1->m_pEdges[1] = c2;
+    c1->m_pEdges[2] = m_pParent[0]->m_pEdges[1];
+
+    c2->m_pEdges[0] = c1;
+    c2->m_pEdges[1] = c3;
+    c2->m_pEdges[2] = m_pParent[0]->m_pEdges[0];
+
+    c3->m_pEdges[0] = c2;
+    c3->m_pEdges[1] = c4;
+    c3->m_pEdges[2] = m_pParent[1]->m_pEdges[2];
+
+    c4->m_pEdges[0] = c3;
+    c4->m_pEdges[1] = c1;
+    c4->m_pEdges[2] = m_pParent[1]->m_pEdges[1];
 
 //    c1->m_pDiamond = this;
 //    c2->m_pDiamond = this;

@@ -18,7 +18,7 @@ Vector3::Vector3(float newX, float newY, float newZ)
 
 void Vector3::Dump()
 {
-    cout << "Vector3  0x" << hex << this << dec << " (" << x << ", " << y << ", " << z << ")" << endl;
+    cout << "Vector3  " << hex << this << dec << " (" << x << ", " << y << ", " << z << ")" << endl;
 }
 
 void Vector3::Normalize()
