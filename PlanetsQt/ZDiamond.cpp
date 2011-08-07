@@ -75,10 +75,10 @@ void ZDiamond::split()
     ZTriangle *c3 = new ZTriangle(m_pParent[0]->m_Vertex[0], m, m_pParent[1]->m_Vertex[2], pVertexArray);
     ZTriangle *c4 = new ZTriangle(m_pParent[1]->m_Vertex[2], m, m_pParent[0]->m_Vertex[2], pVertexArray);
 
-    c1->m_pDiamond = this;
-    c2->m_pDiamond = this;
-    c3->m_pDiamond = this;
-    c4->m_pDiamond = this;
+//    c1->m_pDiamond = this;
+//    c2->m_pDiamond = this;
+//    c3->m_pDiamond = this;
+//    c4->m_pDiamond = this;
 
     c1->m_pParent = m_pParent[0];
     c2->m_pParent = m_pParent[0];
@@ -92,4 +92,6 @@ void ZDiamond::split()
 
     m_pMesh->removeTriangle(m_pParent[0]);
     m_pMesh->removeTriangle(m_pParent[1]);
+
+    m_pMesh->removeDiamond(this);
 }

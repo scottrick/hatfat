@@ -18,6 +18,7 @@ public:
 
     void                addDiamond(ZDiamond *pDiamond);
     void                addTriangle(ZTriangle *pTriangle);
+    void                removeDiamond(ZDiamond *pDiamond);
     void                removeTriangle(ZTriangle *pTriangle);
 
     void                render();

@@ -41,7 +41,7 @@ void ZTriangle::prepareDraw(unsigned short *array, unsigned short &index)
 void ZTriangle::split()
 {
     cout << "splitting ";
-    this->dump();;
+    this->dump();
 
     if (m_pDiamond)
     {

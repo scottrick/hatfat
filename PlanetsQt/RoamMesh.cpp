@@ -41,10 +41,16 @@ void RoamMesh::addTriangle(ZTriangle *pTriangle)
     m_Triangles.push_back(pTriangle);
 }
 
+void RoamMesh::removeDiamond(ZDiamond *pDiamond)
+{
+    cout << "removing Diamond 0x" << hex << pDiamond << dec << endl;
+    m_Diamonds.remove(pDiamond);
+}
+
 void RoamMesh::removeTriangle(ZTriangle *pTriangle)
 {
-    cout << "removing 0x" << hex << pTriangle << dec << "         count=" << m_Triangles.size() << endl;
     m_Triangles.remove(pTriangle);
+    cout << "removed 0x" << hex << pTriangle << dec << ".  Current triangle count is " << m_Triangles.size() << "." << endl;
 
 //    list<ZTriangle *>::iterator iter = m_Triangles.begin();
 //    while (iter != m_Triangles.end())
@@ -238,52 +244,67 @@ void RoamMesh::setupBaseTriangles()
         pTri[i]->updateVertices();
     }
 
-    //now we need to setup all the edge pointers
+    /*
+     Edges, corresponding to the triangle vertices:
 
+               2
+              /|  Edge 0, corresponds to the side between vertex 0 and 1.
+             / |  Edge 1, corresponds to the side between vertex 1 and 2.
+            /  |  Edge 2, corresponds to the side between vertex 2 and 0.
+           /   |
+          /    |
+         /     |
+        /      |
+       /       |
+      /        |
+     0 - - - - 1
+     */
+
+    //now we need to setup all the edge pointers
     //tri 0
-    pTri[0]->m_pEdges[0] = pTri[1];
-    pTri[0]->m_pEdges[1] = pTri[9];
-    pTri[0]->m_pEdges[2] = pTri[7];
+    pTri[0]->m_pEdges[0] = pTri[9];
+    pTri[0]->m_pEdges[1] = pTri[7];
+    pTri[0]->m_pEdges[2] = pTri[1];
 
     //tri 1
     pTri[1]->m_pEdges[0] = pTri[0];
-    pTri[1]->m_pEdges[1] = pTri[4];
-    pTri[1]->m_pEdges[2] = pTri[11];
+    pTri[1]->m_pEdges[1] = pTri[10];
+    pTri[1]->m_pEdges[2] = pTri[4];
 
     //tri 2
-    pTri[2]->m_pEdges[0] = pTri[3];
+    pTri[2]->m_pEdges[0] = pTri[8];
     pTri[2]->m_pEdges[1] = pTri[5];
-    pTri[2]->m_pEdges[2] = pTri[8];
+    pTri[2]->m_pEdges[2] = pTri[3];
 
     //tri 3
     pTri[3]->m_pEdges[0] = pTri[2];
-    pTri[3]->m_pEdges[1] = pTri[6];
-    pTri[3]->m_pEdges[2] = pTri[11];
+    pTri[3]->m_pEdges[1] = pTri[11];
+    pTri[3]->m_pEdges[2] = pTri[6];
 
     //tri 4
-    pTri[4]->m_pEdges[0] = pTri[5];
+    pTri[4]->m_pEdges[0] = pTri[9];
     pTri[4]->m_pEdges[1] = pTri[1];
-    pTri[4]->m_pEdges[2] = pTri[9];
+    pTri[4]->m_pEdges[2] = pTri[5];
 
     //tri 5
     pTri[5]->m_pEdges[0] = pTri[4];
-    pTri[5]->m_pEdges[1] = pTri[2];
-    pTri[5]->m_pEdges[2] = pTri[11];
+    pTri[5]->m_pEdges[1] = pTri[11];
+    pTri[5]->m_pEdges[2] = pTri[2];
 
     //tri 6
-    pTri[6]->m_pEdges[0] = pTri[7];
+    pTri[6]->m_pEdges[0] = pTri[8];
     pTri[6]->m_pEdges[1] = pTri[3];
-    pTri[6]->m_pEdges[2] = pTri[8];
+    pTri[6]->m_pEdges[2] = pTri[7];
 
     //tri 7
     pTri[7]->m_pEdges[0] = pTri[6];
-    pTri[7]->m_pEdges[1] = pTri[0];
-    pTri[7]->m_pEdges[2] = pTri[10];
+    pTri[7]->m_pEdges[1] = pTri[10];
+    pTri[7]->m_pEdges[2] = pTri[0];
 
     //tri 8
-    pTri[8]->m_pEdges[0] = pTri[9];
+    pTri[8]->m_pEdges[0] = pTri[2];
     pTri[8]->m_pEdges[1] = pTri[6];
-    pTri[8]->m_pEdges[2] = pTri[2];
+    pTri[8]->m_pEdges[2] = pTri[9];
 
     //tri 9
     pTri[9]->m_pEdges[0] = pTri[8];
@@ -291,9 +312,9 @@ void RoamMesh::setupBaseTriangles()
     pTri[9]->m_pEdges[2] = pTri[4];
 
     //tri 10
-    pTri[10]->m_pEdges[0] = pTri[11];
+    pTri[10]->m_pEdges[0] = pTri[1];
     pTri[10]->m_pEdges[1] = pTri[7];
-    pTri[10]->m_pEdges[2] = pTri[1];
+    pTri[10]->m_pEdges[2] = pTri[11];
 
     //tri 11
     pTri[11]->m_pEdges[0] = pTri[10];
@@ -325,8 +346,8 @@ void RoamMesh::toggleWireframe()
 
 void RoamMesh::update()
 {
-    if (m_Triangles.size() <= 20)
+    if (m_Triangles.size() <= 22)
     {
-       (*m_Triangles.begin())->split();
+        (*m_Triangles.begin())->split();
     }
 }
