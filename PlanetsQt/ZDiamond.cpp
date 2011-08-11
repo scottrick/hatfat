@@ -73,15 +73,12 @@ void ZDiamond::split()
 
     ZVertex *pMidpoint = (*pVertexArray)[m];
     pMidpoint->makeMidpoint(pVertexOne, pVertexTwo);
+    pMidpoint->setNormal(pMidpoint->getPosition().x, pMidpoint->getPosition().y, pMidpoint->getPosition().z);
     pVertexArray->updateVertex(m);
 
     //make the four children!
-//    ZTriangle *c1 = new ZTriangle(m_pParent[0]->m_Vertex[2], m, m_pParent[0]->m_Vertex[1], pVertexArray);
     ZTriangle *c1 = new ZTriangle(m_pParent[0]->m_Vertex[1], m_pParent[0]->m_Vertex[2], m, pVertexArray);
-
-//    ZTriangle *c2 = new ZTriangle(m_pParent[0]->m_Vertex[1], m, m_pParent[0]->m_Vertex[0], pVertexArray);
     ZTriangle *c2 = new ZTriangle(m_pParent[0]->m_Vertex[0], m_pParent[0]->m_Vertex[1], m, pVertexArray);
-
     ZTriangle *c3 = new ZTriangle(m_pParent[1]->m_Vertex[0], m, m_pParent[1]->m_Vertex[2], pVertexArray);
     ZTriangle *c4 = new ZTriangle(m_pParent[1]->m_Vertex[2], m, m_pParent[1]->m_Vertex[1], pVertexArray);
 

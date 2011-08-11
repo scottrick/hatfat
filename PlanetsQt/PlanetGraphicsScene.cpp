@@ -139,8 +139,6 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glDisable(GL_DEPTH_TEST);
     }
 
-    glEnable(GL_CULL_FACE);
-
     if (bLight)
     {
         glEnable(GL_LIGHTING);
@@ -166,6 +164,8 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glDisable(GL_LIGHT0);
     }
 
+    glEnable(GL_CULL_FACE);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -187,7 +187,16 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         break;
     }
 
+    glDisable(GL_CULL_FACE);
+
     ++m_fpsCounter;
+
+    error = glGetError();
+    while (error != GL_NO_ERROR)
+    {
+        cout << "error: " << hex << error << dec << endl;
+        error = glGetError();
+    }
 }
 
 void PlanetGraphicsScene::drawNoise()

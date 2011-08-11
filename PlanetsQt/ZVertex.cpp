@@ -27,14 +27,6 @@ void ZVertex::makeMidpoint(ZVertex *pStart, ZVertex *pEnd)
     //just naively assume its an average for now...
     this->setPos((pos[0].x + pos[1].x) / 2.0f, (pos[0].y + pos[1].y) / 2.0f, (pos[0].z + pos[1].z) / 2.0f);
     this->setNormal((nrm[0].x + nrm[1].x) / 2.0f, (nrm[0].y + nrm[1].y) / 2.0f, (nrm[0].z + nrm[1].z) / 2.0f);
-
-//    cout << "makeMidpoint!" << endl;
-//    cout << "(1) ";
-//    pStart->dump();
-//    cout << "(2) ";
-//    pEnd->dump();
-//    cout << "(!) ";
-//    this->dump();
 }
 
 void ZVertex::setNormal(const float &x, const float &y, const float &z)

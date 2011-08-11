@@ -321,7 +321,20 @@ void RoamMesh::setVertexArray(ZVertexArray *newArray)
 
 void RoamMesh::splitOne()
 {
-    (*m_Triangles.begin())->split();
+    list<ZTriangle *>::iterator iter = m_Triangles.begin();
+
+    while (iter != m_Triangles.end())
+    {
+        ZTriangle *pTriangle = *iter;
+
+        if (pTriangle->m_pDiamond)
+        {
+            pTriangle->split();
+            break;
+        }
+
+        iter++;
+    }
 }
 
 void RoamMesh::toggleWireframe()
