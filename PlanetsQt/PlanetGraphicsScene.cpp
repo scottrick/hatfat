@@ -139,7 +139,7 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
         glDisable(GL_DEPTH_TEST);
     }
 
-//    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     if (bLight)
     {
@@ -171,12 +171,10 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
     ZCamera::doTempPerspectiveCrap((float)width() / (float)height());
-    glMatrixMode(GL_MODELVIEW);
 
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glPushMatrix();
 
     switch (currentMode)
     {
@@ -190,8 +188,6 @@ void PlanetGraphicsScene::drawBackground(QPainter *painter, const QRectF &)
     }
 
     ++m_fpsCounter;
-
-    glPopMatrix();
 }
 
 void PlanetGraphicsScene::drawNoise()

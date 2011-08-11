@@ -153,23 +153,23 @@ void RoamMesh::setupBaseTriangles()
      2 - - - - - 3
      */
 
-    (*m_pVertexArray)[ind[0]]->setPos(-1.0f, 1.0f, -1.0f);
-    (*m_pVertexArray)[ind[1]]->setPos(1.0f, 1.0f, -1.0f);
-    (*m_pVertexArray)[ind[2]]->setPos(-1.0f, -1.0f, -1.0f);
-    (*m_pVertexArray)[ind[3]]->setPos(1.0f, -1.0f, -1.0f);
-    (*m_pVertexArray)[ind[4]]->setPos(-1.0f, 1.0f, 1.0f);
-    (*m_pVertexArray)[ind[5]]->setPos(1.0f, 1.0f, 1.0f);
-    (*m_pVertexArray)[ind[6]]->setPos(-1.0f, -1.0f, 1.0f);
-    (*m_pVertexArray)[ind[7]]->setPos(1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[0]]->setPos(-1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[1]]->setPos(1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[2]]->setPos(-1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[3]]->setPos(1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[4]]->setPos(-1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[5]]->setPos(1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[6]]->setPos(-1.0f, -1.0f, -1.0f);
+    (*m_pVertexArray)[ind[7]]->setPos(1.0f, -1.0f, -1.0f);
 
-    (*m_pVertexArray)[ind[0]]->setNormal(-1.0f, 1.0f, -1.0f);
-    (*m_pVertexArray)[ind[1]]->setNormal(1.0f, 1.0f, -1.0f);
-    (*m_pVertexArray)[ind[2]]->setNormal(-1.0f, -1.0f, -1.0f);
-    (*m_pVertexArray)[ind[3]]->setNormal(1.0f, -1.0f, -1.0f);
-    (*m_pVertexArray)[ind[4]]->setNormal(-1.0f, 1.0f, 1.0f);
-    (*m_pVertexArray)[ind[5]]->setNormal(1.0f, 1.0f, 1.0f);
-    (*m_pVertexArray)[ind[6]]->setNormal(-1.0f, -1.0f, 1.0f);
-    (*m_pVertexArray)[ind[7]]->setNormal(1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[0]]->setNormal(-1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[1]]->setNormal(1.0f, 1.0f, 1.0f);
+    (*m_pVertexArray)[ind[2]]->setNormal(-1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[3]]->setNormal(1.0f, -1.0f, 1.0f);
+    (*m_pVertexArray)[ind[4]]->setNormal(-1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[5]]->setNormal(1.0f, 1.0f, -1.0f);
+    (*m_pVertexArray)[ind[6]]->setNormal(-1.0f, -1.0f, -1.0f);
+    (*m_pVertexArray)[ind[7]]->setNormal(1.0f, -1.0f, -1.0f);
 
     ZTriangle *pTri[12];
 
